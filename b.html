@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BELG - Connection Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h2>Testing Supabase Connection</h2>
+    <button onclick="testConnection()">Test Connection</button>
+    <pre id="result"></pre>
+
+    <script>
+        const supabase = window.supabase.createClient(
+            'https://yljlpvotsysvppimmoxh.supabase.co',
+            'sb_publishable_6iHIGUlF5Y9emm6ig238Vg_3he7bc-b'
+        );
+
+        async function testConnection() {
+            const result = document.getElementById('result');
+            result.innerText = 'Testing connection...';
+            
+            try {
+                // محاولة جلب بيانات من جدول (سيحاول فقط، وليس شرطًا أن ينجح)
+                const { data, error } = await supabase.from('profiles').select('count');
+                
+                if (error) {
+                    result.innerText = '❌ Error: ' + error.message;
+                } else {
+                    result.innerText = '✅ Connection successful!';
+                }
+            } catch (err) {
+                result.innerText = '❌ Exception: ' + err.message;
+            }
+        }
+    </script>
+</body>
+</html>
