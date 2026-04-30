@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BELG - Final Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h2>BELG SERVICES - Sign Up Test</h2>
+    <p>Please enter a new email and password:</p>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="signUpUser()">Sign Up</button>
+    <pre id="result"></pre>
+
+    <script>
+        // Supabase configuration for your TEST project
+        const SUPABASE_URL = 'https://yljlpvotsysvppimmoxh.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_6iHIGUlF5Y9emm6ig238Vg_3he7bc-b';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function signUpUser() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (!email || !password) {
+                resultDiv.innerText = '❌ Please enter both email and password.';
+                return;
+            }
+            
+            resultDiv.innerText = '⏳ Creating account...';
+            
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password
+            });
+            
+            if (error) {
+                resultDiv.innerText = '❌ Sign-up failed: ' + error.message;
+                console.error(error);
+            } else {
+                resultDiv.innerText = '✅ Success! User ID: ' + data.user.id + '. Check your email (if confirmation is on).';
+                console.log(data);
+            }
+        }
+    </script>
+</body>
+</html>
