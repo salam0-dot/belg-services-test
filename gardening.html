@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Gardening & Landscaping - BELG SERVICES</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fefcf5;
+            color: #1e2a2f;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header / Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: white;
+            border-bottom: 1px solid #f0e4d8;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            height: 45px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #c49a6c, #8b5a2b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #2c3e2f;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #c49a6c;
+        }
+
+        /* Hero / Title Section */
+        .hero-section {
+            text-align: center;
+            padding: 50px 20px 30px;
+            background-color: #fefcf5;
+        }
+
+        .hero-section h1 {
+            font-size: 2rem;
+            color: #c49a6c;
+            margin-bottom: 15px;
+        }
+
+        .hero-section p {
+            color: #6e5e4a;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Buttons Container */
+        .buttons-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 20px 40px;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .skill-btn {
+            background: white;
+            border: 2px solid #c49a6c;
+            color: #c49a6c;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .skill-btn:hover {
+            background: #c49a6c;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .add-btn {
+            background: #c49a6c;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            width: fit-content;
+            transition: 0.2s;
+        }
+
+        .add-btn:hover {
+            background: #a57c52;
+            transform: scale(1.02);
+        }
+
+        /* Image Section - Fills all empty space from edge to edge */
+        .image-fill-section {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            line-height: 0;
+        }
+
+        .image-fill-section img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e2f;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            width: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 16px 20px;
+                flex-direction: column;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .skill-btn {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
+            .hero-section h1 {
+                font-size: 1.5rem;
+            }
+            .hero-section {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navigation -->
+    <div class="navbar">
+        <div class="logo-area">
+            <img src="logo.png" alt="BELG SERVICES" class="logo-img">
+            <span class="logo-text">BELG SERVICES</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="settings.html" style="font-size: 1.2rem;"><i class="fas fa-cog"></i></a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1>🌿 Your Skills Earn Trust and Steady Work</h1>
+        <p>Register your expertise in Gardening & Landscaping</p>
+    </div>
+
+    <!-- Buttons -->
+    <div class="buttons-container">
+        <div class="button-row">
+            <button class="skill-btn" onclick="alert('Tractor Driver - Coming Soon')">🚜 Tractor Driver</button>
+            <button class="skill-btn" onclick="alert('Livestock Breeding - Coming Soon')">🐄 Livestock Breeding</button>
+            <button class="skill-btn" onclick="alert('Agriculture - Coming Soon')">🌾 Agriculture</button>
+            <button class="skill-btn" onclick="alert('Greenhouse Farming - Coming Soon')">🏠 Greenhouse Farming</button>
+            <button class="skill-btn" onclick="alert('Hedge Trimming - Coming Soon')">✂️ Hedge Trimming</button>
+        </div>
+
+        <button class="add-btn" onclick="alert('Add your skill feature coming soon')">➕ Add Your Skill</button>
+
+        <div class="button-row">
+            <button class="skill-btn" onclick="alert('Tree Pruning - Coming Soon')">🌳 Tree Pruning</button>
+            <button class="skill-btn" onclick="alert('Farm Fencing - Coming Soon')">🚧 Farm Fencing</button>
+            <button class="skill-btn" onclick="alert('Tree Planting - Coming Soon')">🌲 Tree Planting</button>
+            <button class="skill-btn" onclick="alert('Landscape Design - Coming Soon')">🏞️ Landscape Design</button>
+            <button class="skill-btn" onclick="alert('Garden Planning - Coming Soon')">📐 Garden Planning</button>
+        </div>
+    </div>
+
+    <!-- Image Section - Fills all empty space -->
+    <div class="image-fill-section">
+        <img src="gardening-bg.jpg" alt="Gardening Background">
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>© 2025 BELG SERVICES — Gardening & Landscaping</p>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TEST - BELG SERVICES</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>body { font-family: Arial; padding: 20px; } input, button { margin: 10px 0; padding: 10px; width: 100%; }</style>
+</head>
+<body>
+    <h2>BELG SERVICES - TEST REGISTER</h2>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="testRegister()">TEST REGISTER</button>
+    <div id="result"></div>
+
+    <script>
+        const SUPABASE_URL = 'https://dhvdohzjfmxmfxbinqsj.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_53zXqL_1ykPehXSQed-EfA_XEJ2rxzM';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function testRegister() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const resultDiv = document.getElementById('result');
+            
+            resultDiv.innerHTML = 'جاري التسجيل...';
+            
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password
+            });
+            
+            if (error) {
+                resultDiv.innerHTML = '❌ خطأ: ' + error.message;
+            } else {
+                resultDiv.innerHTML = '✅ تم إنشاء الحساب بنجاح! تحقق من بريدك الإلكتروني.';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Register - BELG SERVICES</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #fefcf5 0%, #f9f3e9 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+        .register-container { max-width: 500px; width: 100%; background: white; border-radius: 48px; box-shadow: 0 25px 45px -12px rgba(0,0,0,0.15); overflow: hidden; }
+        .register-header { background: linear-gradient(135deg, #c49a6c, #a57c52); padding: 32px 28px; text-align: center; color: white; }
+        .register-header i { font-size: 3rem; margin-bottom: 12px; }
+        .register-header h1 { font-size: 1.9rem; font-weight: 700; letter-spacing: -0.5px; }
+        .register-header p { font-size: 0.9rem; opacity: 0.85; margin-top: 8px; }
+        .register-body { padding: 36px 32px; }
+        .user-type-selector { display: flex; gap: 12px; margin-bottom: 28px; background: #f5f0ea; padding: 6px; border-radius: 60px; }
+        .user-type-btn { flex: 1; text-align: center; padding: 10px 0; border: none; background: transparent; font-weight: 600; font-size: 0.85rem; border-radius: 50px; cursor: pointer; transition: 0.2s; color: #5a4a3a; }
+        .user-type-btn.active { background: #c49a6c; color: white; box-shadow: 0 4px 10px rgba(196,154,108,0.2); }
+        .social-register { display: flex; gap: 16px; margin-bottom: 28px; }
+        .social-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 60px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.2s; text-decoration: none; border: 1px solid #e2cfbc; background: white; color: #1e2a2f; }
+        .social-btn i { font-size: 1.2rem; }
+        .social-btn.facebook-btn i { color: #1877f2; }
+        .social-btn.google-btn i { color: #db4437; }
+        .social-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.08); }
+        .divider { text-align: center; margin: 24px 0; position: relative; }
+        .divider::before { content: ""; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #e2cfbc; }
+        .divider span { background: white; padding: 0 16px; position: relative; color: #8b7a67; font-size: 0.8rem; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-weight: 500; margin-bottom: 8px; color: #2c3e2f; font-size: 0.85rem; }
+        .input-group input { width: 100%; padding: 14px 18px; border: 1.5px solid #e2cfbc; border-radius: 60px; font-family: 'Inter', sans-serif; font-size: 0.95rem; transition: 0.2s; background: white; }
+        .input-group input:focus { outline: none; border-color: #c49a6c; box-shadow: 0 0 0 3px rgba(196,154,108,0.1); }
+        .register-btn { width: 100%; background: #c49a6c; color: white; border: none; padding: 14px; font-size: 1rem; font-weight: 700; border-radius: 60px; cursor: pointer; transition: 0.2s; margin-top: 16px; }
+        .register-btn:hover { background: #a57c52; transform: translateY(-2px); }
+        .login-link { text-align: center; margin-top: 24px; font-size: 0.85rem; color: #5a6e4a; }
+        .login-link a { color: #c49a6c; text-decoration: none; font-weight: 600; }
+        .back-home { display: block; text-align: center; margin-top: 20px; text-decoration: none; color: #8b7a67; font-size: 0.8rem; }
+        .back-home i { margin-right: 6px; }
+        .alert-message { padding: 12px 16px; border-radius: 60px; margin-bottom: 20px; font-size: 0.85rem; text-align: center; }
+        .alert-error { background: #ffe0e0; color: #b33; border: 1px solid #ffb3b3; }
+        .alert-success { background: #d4f5d0; color: #2e6b1f; border: 1px solid #b8e0b0; }
+        @media (max-width: 520px) { .register-body { padding: 28px 20px; } .social-register { flex-direction: column; } .user-type-selector { flex-wrap: wrap; } }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-header">
+            <i class="fas fa-user-plus"></i>
+            <h1>Create Account</h1>
+            <p>Join BELG SERVICES today</p>
+        </div>
+        <div class="register-body">
+            <div id="alertContainer"></div>
+            <div class="user-type-selector">
+                <button class="user-type-btn active" data-type="client">👤 Client</button>
+                <button class="user-type-btn" data-type="worker">🔧 Worker</button>
+                <button class="user-type-btn" data-type="company">🏢 Company</button>
+            </div>
+            <div class="social-register">
+                <button class="social-btn facebook-btn" onclick="alert('Facebook sign-up coming soon')"><i class="fab fa-facebook-f"></i> Facebook</button>
+                <button class="social-btn google-btn" onclick="alert('Google sign-up coming soon')"><i class="fab fa-google"></i> Google</button>
+            </div>
+            <div class="divider"><span>or register with email</span></div>
+            <form id="registerForm">
+                <div class="input-group"><label>Full Name</label><input type="text" id="fullName" placeholder="John Smith" required></div>
+                <div class="input-group"><label>Email Address</label><input type="email" id="email" placeholder="hello@belgservices.com" required></div>
+                <div class="input-group"><label>Password</label><input type="password" id="password" placeholder="Create a strong password" required></div>
+                <div class="input-group"><label>Confirm Password</label><input type="password" id="confirmPassword" placeholder="Confirm your password" required></div>
+                <button type="submit" class="register-btn">Create Account →</button>
+                <div class="login-link">Already have an account? <a href="login.html">Sign In</a></div>
+                <a href="index.html" class="back-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            </form>
+        </div>
+    </div>
+    <script>
+        const SUPABASE_URL = 'https://dhvdohzjfmxmfxbinqsj.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_53zXqL_1ykPehXSQed-EfA_XEJ2rxzM';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        const typeBtns = document.querySelectorAll('.user-type-btn');
+        let selectedUserType = 'client';
+        
+        typeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                typeBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedUserType = btn.getAttribute('data-type');
+                console.log(`Selected user type: ${selectedUserType}`);
+            });
+        });
+        
+        function showAlert(message, type = 'error') {
+            const alertContainer = document.getElementById('alertContainer');
+            alertContainer.innerHTML = `<div class="alert-message alert-${type}">${message}</div>`;
+            setTimeout(() => { alertContainer.innerHTML = ''; }, 5000);
+        }
+        
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (!fullName || !email || !password) { showAlert('Please fill in all fields'); return; }
+            if (password !== confirmPassword) { showAlert('Passwords do not match'); return; }
+            if (password.length < 6) { showAlert('Password must be at least 6 characters'); return; }
+            
+            const submitBtn = document.querySelector('.register-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating account...';
+            
+            try {
+                const { data: authData, error: authError } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: { data: { full_name: fullName, user_type: selectedUserType } }
+                });
+                
+                if (authError) throw authError;
+                
+                if (authData.user) {
+                    const { error: profileError } = await supabase
+                        .from('profiles')
+                        .insert([{
+                            id: authData.user.id,
+                            full_name: fullName,
+                            email: email,
+                            user_type: selectedUserType,
+                            created_at: new Date().toISOString()
+                        }]);
+                    
+                    if (profileError) throw profileError;
+                    
+                    showAlert('Account created successfully! Please check your email.', 'success');
+                    document.getElementById('registerForm').reset();
+                    setTimeout(() => { window.location.href = 'login.html'; }, 3000);
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showAlert(error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Create Account →';
+            }
+        });
+    </script>
+</body>
+</html>

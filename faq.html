@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — BELG SERVICES</title>
+
+<style>
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #ffffff;
+}
+
+/* NAV */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #8B4513; /* بني بدل الأزرق */
+  padding: 12px 0;
+  text-align: center;
+  z-index: 999;
+}
+
+.top-nav a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.top-nav a:hover {
+  text-decoration: underline;
+}
+
+/* HEADER */
+header {
+  margin-top: 100px;
+  text-align: center;
+  padding: 20px;
+}
+
+.logo {
+  width: 200px;
+}
+
+h1 {
+  color: #8B4513; /* بني بدل الأزرق */
+  font-size: 36px;
+  margin-top: 10px;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #555;
+  margin-top: -5px;
+}
+
+/* FAQ */
+.faq-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.faq-item {
+  background: rgba(0,0,0,0.05);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.faq-question {
+  font-size: 20px;
+  font-weight: bold;
+  color: #8B4513; /* بني بدل الأزرق */
+}
+
+.faq-answer {
+  display: none;
+  margin-top: 10px;
+  font-size: 16px;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* FOOTER */
+.footer {
+  background: #8B4513; /* بني بدل الأزرق */
+  color: white;
+  padding: 20px 10px;
+  text-align: center;
+  margin-top: 40px;
+  font-size: 14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="how-it-works.html">How It Works</a>
+  <a href="faq.html">FAQ</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<!-- HEADER -->
+<header>
+  <img src="logo.png" class="logo">
+  <h1>Frequently Asked Questions</h1>
+  <p class="subtitle">Find answers to the most common questions</p>
+</header>
+
+<!-- FAQ CONTENT -->
+<div class="faq-container">
+
+  <div class="faq-item" onclick="toggleFAQ(this)">
+    <div class="faq-question">What is BELG SERVICES?</div>
+    <div class="faq-answer">
+      BELG SERVICES is a platform that connects clients with professional workers 
+      for services such as cleaning, moving, repairs, renovation, and more.
+    </div>
+  </div>
+
+  <div class="faq-item" onclick="toggleFAQ(this)">
+    <div class="faq-question">How do I create an account?</div>
+    <div class="faq-answer">
+      You can create an account by clicking on the Register page and filling out 
+      your basic information. The process takes less than one minute.
+    </div>
+  </div>
+
+  <div class="faq-item" onclick="toggleFAQ(this)">
+    <div class="faq-question">Is the service available in all cities?</div>
+    <div class="faq-answer">
+      The platform is expanding quickly and aims to cover all major cities in Belgium.
+    </div>
+  </div>
+
+  <div class="faq-item" onclick="toggleFAQ(this)">
+    <div class="faq-question">How are workers selected?</div>
+    <div class="faq-answer">
+      Workers are verified based on identity, experience, and customer ratings 
+      to ensure high-quality service.
+    </div>
+  </div>
+
+  <div class="faq-item" onclick="toggleFAQ(this)">
+    <div class="faq-question">How do payments work?</div>
+    <div class="faq-answer">
+      Payments are processed securely through the platform with full transparency 
+      and no hidden fees.
+    </div>
+  </div>
+
+  <div class="faq-item" onclick="toggleFAQ(this)">
+    <div class="faq-question">Can I cancel a booking?</div>
+    <div class="faq-answer">
+      Yes, you can cancel a booking before the worker starts the job. 
+      Cancellation rules may apply depending on the service.
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleFAQ(element) {
+  const answer = element.querySelector(".faq-answer");
+  answer.style.display = answer.style.display === "block" ? "none" : "block";
+}
+</script>
+
+<!-- FOOTER -->
+<footer class="footer">
+  © 2024 BELG SERVICES — All Rights Reserved
+</footer>
+
+</body>
+</html>

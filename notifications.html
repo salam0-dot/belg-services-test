@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notifications — BELG SERVICES</title>
+
+<style>
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f7f7f7;
+}
+
+/* NAV */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #003366;
+  padding: 12px 0;
+  text-align: center;
+  z-index: 999;
+}
+
+.top-nav a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* HEADER */
+header {
+  margin-top: 100px;
+  text-align: center;
+}
+
+.logo {
+  width: 160px;
+}
+
+h1 {
+  color: #003366;
+  font-size: 32px;
+}
+
+/* NOTIFICATIONS */
+.notifications-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.notification-card {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.icon {
+  font-size: 26px;
+}
+
+.notification-content h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #003366;
+}
+
+.notification-content p {
+  margin: 5px 0;
+  color: #444;
+  font-size: 14px;
+}
+
+.time {
+  font-size: 12px;
+  color: #777;
+}
+
+/* COLORS */
+.success { border-left: 5px solid #28a745; }
+.warning { border-left: 5px solid #ffc107; }
+.info    { border-left: 5px solid #17a2b8; }
+.danger  { border-left: 5px solid #dc3545; }
+
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <a href="dashboard.html">Dashboard</a>
+  <a href="my-bookings.html">My Bookings</a>
+  <a href="notifications.html">Notifications</a>
+  <a href="settings.html">Settings</a>
+</nav>
+
+<!-- HEADER -->
+<header>
+  <img src="logo.png" class="logo">
+  <h1>Notifications</h1>
+</header>
+
+<!-- NOTIFICATIONS LIST -->
+<div class="notifications-container">
+
+  <!-- Payment Notification -->
+  <div class="notification-card success">
+    <div class="icon">💳</div>
+    <div class="notification-content">
+      <h3>Payment Confirmed</h3>
+      <p>Your payment for the Cleaning Service (50€) has been successfully processed.</p>
+      <div class="time">2 minutes ago</div>
+    </div>
+  </div>
+
+  <!-- Chat Warning (Blocked Message) -->
+  <div class="notification-card danger">
+    <div class="icon">🚫</div>
+    <div class="notification-content">
+      <h3>Message Blocked</h3>
+      <p>Your last message contained restricted contact information and was blocked for safety.</p>
+      <div class="time">10 minutes ago</div>
+    </div>
+  </div>
+
+  <!-- Worker Accepted -->
+  <div class="notification-card info">
+    <div class="icon">🧹</div>
+    <div class="notification-content">
+      <h3>Worker Accepted Your Request</h3>
+      <p>John Doe has accepted your cleaning request for today at 16:00.</p>
+      <div class="time">1 hour ago</div>
+    </div>
+  </div>
+
+  <!-- Referral Bonus -->
+  <div class="notification-card success">
+    <div class="icon">🎁</div>
+    <div class="notification-content">
+      <h3>Referral Reward Unlocked</h3>
+      <p>You invited 10 users. You now have 15 days with 0% commission.</p>
+      <div class="time">Yesterday</div>
+    </div>
+  </div>
+
+  <!-- System Info -->
+  <div class="notification-card warning">
+    <div class="icon">⚠️</div>
+    <div class="notification-content">
+      <h3>Important Notice</h3>
+      <p>Contact information will remain hidden until payment is completed.</p>
+      <div class="time">2 days ago</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

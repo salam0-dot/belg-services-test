@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BELG SERVICES - TEST REGISTER</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: system-ui; max-width: 400px; margin: 50px auto; padding: 20px; }
+        input, select, button { width: 100%; padding: 10px; margin: 8px 0; border-radius: 12px; border: 1px solid #ccc; }
+        button { background: #c49a6c; color: white; border: none; font-weight: bold; cursor: pointer; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h2>🔐 BELG SERVICES - تسجيل حساب</h2>
+    <p>جرب التسجيل الآن</p>
+    
+    <input type="text" id="fullName" placeholder="الاسم الكامل">
+    <input type="email" id="email" placeholder="البريد الإلكتروني">
+    <input type="password" id="password" placeholder="كلمة المرور">
+    <select id="userType">
+        <option value="client">👤 عميل</option>
+        <option value="worker">🔧 عامل</option>
+        <option value="company">🏢 شركة</option>
+    </select>
+    <button onclick="register()">إنشاء حساب</button>
+    <div id="message"></div>
+
+    <script>
+        // 🔐 بيانات الاتصال بـ Supabase (من صورتك)
+        const SUPABASE_URL = 'https://dhvdohzjfmxmfxbinqsj.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_53zXqL_1ykPehXSQed-EfA_XEJ2rxzM';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function register() {
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const userType = document.getElementById('userType').value;
+            const messageDiv = document.getElementById('message');
+            
+            messageDiv.innerHTML = 'جاري التسجيل...';
+            
+            try {
+                // 1️⃣ تسجيل المستخدم في Auth
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            full_name: fullName,
+                            user_type: userType
+                        }
+                    }
+                });
+                
+                if (error) throw error;
+                
+                // 2️⃣ حفظ البيانات في جدول profiles
+                if (data.user) {
+                    const { error: profileError } = await supabase
+                        .from('profiles')
+                        .insert([{
+                            id: data.user.id,
+                            full_name: fullName,
+                            email: email,
+                            user_type: userType,
+                            created_at: new Date()
+                        }]);
+                    
+                    if (profileError) throw profileError;
+                    
+                    messageDiv.innerHTML = '<span class="success">✅ تم إنشاء الحساب بنجاح! يمكنك تسجيل الدخول.</span>';
+                }
+                
+            } catch (err) {
+                console.error(err);
+                messageDiv.innerHTML = '<span class="error">❌ خطأ: ' + err.message + '</span>';
+            }
+        }
+    </script>
+</body>
+</html>

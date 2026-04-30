@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>General Maintenance - BELG SERVICES</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fefcf5;
+            color: #1e2a2f;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header / Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: white;
+            border-bottom: 1px solid #f0e4d8;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            height: 45px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #c49a6c, #8b5a2b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #2c3e2f;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #c49a6c;
+        }
+
+        /* Hero / Title Section */
+        .hero-section {
+            text-align: center;
+            padding: 50px 20px 30px;
+            background-color: #fefcf5;
+        }
+
+        .hero-section h1 {
+            font-size: 2rem;
+            color: #c49a6c;
+            margin-bottom: 15px;
+        }
+
+        .hero-section p {
+            color: #6e5e4a;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Buttons Container */
+        .buttons-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 20px 40px;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .skill-btn {
+            background: white;
+            border: 2px solid #c49a6c;
+            color: #c49a6c;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .skill-btn:hover {
+            background: #c49a6c;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .add-btn {
+            background: #c49a6c;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            width: fit-content;
+            transition: 0.2s;
+        }
+
+        .add-btn:hover {
+            background: #a57c52;
+            transform: scale(1.02);
+        }
+
+        /* ======================================== */
+        /* IMAGE SECTION - FILLS ALL EMPTY SPACE   */
+        /* ======================================== */
+        .image-fill-section {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            line-height: 0;
+            /* Removes any extra spacing */
+        }
+
+        .image-fill-section img {
+            width: 100%;
+            height: auto;
+            display: block;
+            /* This ensures the image covers the full width without gaps */
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e2f;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            width: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 16px 20px;
+                flex-direction: column;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .skill-btn {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
+
+            .hero-section h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero-section {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== HEADER / NAVIGATION ========== -->
+    <div class="navbar">
+        <div class="logo-area">
+            <img src="logo.png" alt="BELG SERVICES" class="logo-img">
+            <span class="logo-text">BELG SERVICES</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="settings.html" style="font-size: 1.2rem;"><i class="fas fa-cog"></i></a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- ========== HERO SECTION ========== -->
+    <div class="hero-section">
+        <h1>🔧 Your Skills Earn Trust and Steady Work</h1>
+        <p>Register your expertise in General Maintenance</p>
+    </div>
+
+    <!-- ========== BUTTONS ========== -->
+    <div class="buttons-container">
+        <div class="button-row">
+            <button class="skill-btn" onclick="alert('Construction - Coming Soon')">🏗️ Construction</button>
+            <button class="skill-btn" onclick="alert('Tiling - Coming Soon')">🪙 Tiling</button>
+            <button class="skill-btn" onclick="alert('Painting - Coming Soon')">🎨 Painting</button>
+            <button class="skill-btn" onclick="alert('Electrical - Coming Soon')">⚡ Electrical</button>
+            <button class="skill-btn" onclick="alert('Plumbing - Coming Soon')">🚰 Plumbing</button>
+        </div>
+
+        <button class="add-btn" onclick="alert('Add your skill feature coming soon')">➕ Add Your Skill</button>
+
+        <div class="button-row">
+            <button class="skill-btn" onclick="alert('Mechanical - Coming Soon')">🔧 Mechanical</button>
+            <button class="skill-btn" onclick="alert('Welding - Coming Soon')">⚙️ Welding</button>
+            <button class="skill-btn" onclick="alert('Quick Repairs - Coming Soon')">🛠️ Quick Repairs</button>
+            <button class="skill-btn" onclick="alert('Butcher - Coming Soon')">🥩 Butcher</button>
+            <button class="skill-btn" onclick="alert('Phone Repair - Coming Soon')">📱 Phone Repair</button>
+        </div>
+
+        <div class="button-row">
+            <button class="skill-btn" onclick="alert('Furniture Repair - Coming Soon')">🪑 Furniture Repair</button>
+            <button class="skill-btn" onclick="alert('Carpentry - Coming Soon')">🪚 Carpentry</button>
+            <button class="skill-btn" onclick="alert('Bicycle Repair - Coming Soon')">🚲 Bicycle Repair</button>
+            <button class="skill-btn" onclick="alert('E-bike Repair - Coming Soon')">⚡ E-bike Repair</button>
+        </div>
+    </div>
+
+    <!-- ========== IMAGE SECTION - FILLS ALL EMPTY SPACE FROM EDGE TO EDGE ========== -->
+    <div class="image-fill-section">
+        <img src="maintenance-bg.jpg" alt="General Maintenance Background">
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+    <div class="footer">
+        <p>© 2025 BELG SERVICES — General Maintenance</p>
+    </div>
+
+</body>
+</html>

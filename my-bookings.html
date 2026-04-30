@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>My Bookings - BELG SERVICES</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fefcf5;
+            color: #1e2a2f;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        /* Header with golden color */
+        .header {
+            background: linear-gradient(135deg, #c49a6c, #a57c52);
+            padding: 24px 28px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .search-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0 10px;
+        }
+
+        .search-box {
+            flex: 2;
+            display: flex;
+            background: white;
+            border-radius: 60px;
+            overflow: hidden;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-box button {
+            background: #c49a6c;
+            border: none;
+            padding: 0 24px;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .search-box button:hover {
+            background: #a57c52;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid #c49a6c;
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: #c49a6c;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: #c49a6c;
+            color: white;
+        }
+
+        /* Main content */
+        .main-content {
+            padding: 28px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 20px 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .see-all {
+            color: #c49a6c;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .bookings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .booking-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 20px;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+            border: 1px solid #f0e4d8;
+            transition: 0.2s;
+        }
+
+        .booking-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.12);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            background: #ddd;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            flex-shrink: 0;
+        }
+
+        .booking-info {
+            flex: 1;
+        }
+
+        .provider-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .service-type {
+            font-size: 0.8rem;
+            color: #c49a6c;
+            font-weight: 600;
+        }
+
+        .booking-details {
+            margin: 12px 0;
+            font-size: 0.85rem;
+            color: #6e5e4a;
+        }
+
+        .booking-details i {
+            width: 24px;
+            color: #c49a6c;
+        }
+
+        .price {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #2c3e2f;
+            margin: 10px 0;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 50px;
+        }
+        .status-pending { background: #ffe0b3; color: #b45f06; }
+        .status-confirmed { background: #d4f5d0; color: #2e6b1f; }
+        .status-completed { background: #d4e0ff; color: #1e4c8a; }
+        .status-cancelled { background: #ffe0e0; color: #b33; }
+
+        hr {
+            margin: 14px 0;
+            border: none;
+            border-top: 1px solid #ede3d7;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #c49a6c;
+            color: #c49a6c;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn-outline:hover {
+            background: #c49a6c;
+            color: white;
+        }
+        .btn-danger {
+            background: transparent;
+            border: 2px solid #e6614f;
+            color: #e6614f;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            flex: 1;
+            text-align: center;
+        }
+        .btn-danger:hover {
+            background: #e6614f;
+            color: white;
+        }
+        /* New Pay Now button */
+        .btn-pay {
+            background: #c49a6c;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn-pay:hover {
+            background: #a57c52;
+            transform: translateY(-2px);
+        }
+
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            padding: 14px 20px;
+            border-top: 1px solid #ede3d7;
+            margin-top: 20px;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #8b7a67;
+            text-decoration: none;
+            font-size: 0.75rem;
+        }
+
+        .nav-item i {
+            font-size: 1.4rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .nav-item.active, .nav-item:hover {
+            color: #c49a6c;
+        }
+
+        @media (max-width: 680px) {
+            .bookings-grid { grid-template-columns: 1fr; }
+            .search-area { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-calendar-check"></i> My Bookings</h1>
+        <div class="search-area">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search by provider or service...">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-status="all">All</button>
+                <button class="filter-btn" data-status="pending">Pending</button>
+                <button class="filter-btn" data-status="confirmed">Confirmed</button>
+                <button class="filter-btn" data-status="completed">Completed</button>
+                <button class="filter-btn" data-status="cancelled">Cancelled</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="section-title">
+            Your Booking Requests
+            <a href="#" class="see-all" id="seeAllLink">See All ></a>
+        </div>
+        <div class="bookings-grid" id="bookingsContainer"></div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-home"></i> Home</a>
+        <a href="my-bookings.html" class="nav-item active"><i class="fas fa-clipboard-list"></i> Requests</a>
+        <a href="chat.html" class="nav-item"><i class="fas fa-comment-dots"></i> Messages</a>
+        <a href="worker-profile.html" class="nav-item"><i class="fas fa-user"></i> Profile</a>
+    </div>
+</div>
+
+<script>
+    const bookings = [
+        { id: 1, provider: "Sarah M.", service: "House Cleaning", date: "2025-05-15", time: "10:00 AM", price: 80, status: "confirmed", avatar: "https://randomuser.me/api/portraits/women/1.jpg" },
+        { id: 2, provider: "Mike R.", service: "Furniture Moving", date: "2025-05-18", time: "2:00 PM", price: 120, status: "pending", avatar: "https://randomuser.me/api/portraits/men/2.jpg" },
+        { id: 3, provider: "Luis G.", service: "Interior Painting", date: "2025-05-20", time: "9:00 AM", price: 200, status: "confirmed", avatar: "https://randomuser.me/api/portraits/men/3.jpg" },
+        { id: 4, provider: "Jen S.", service: "Custom Furniture", date: "2025-05-22", time: "1:00 PM", price: 350, status: "pending", avatar: "https://randomuser.me/api/portraits/women/4.jpg" },
+        { id: 5, provider: "Anna L.", service: "Deep Cleaning", date: "2025-05-10", time: "11:00 AM", price: 150, status: "completed", avatar: "https://randomuser.me/api/portraits/women/5.jpg" },
+        { id: 6, provider: "Carlos M.", service: "Electrical Repair", date: "2025-05-05", time: "3:00 PM", price: 100, status: "cancelled", avatar: "https://randomuser.me/api/portraits/men/6.jpg" }
+    ];
+
+    function getStatusBadge(status) {
+        if (status === "pending") return '<span class="status-badge status-pending"><i class="fas fa-clock"></i> Pending</span>';
+        if (status === "confirmed") return '<span class="status-badge status-confirmed"><i class="fas fa-check-circle"></i> Confirmed</span>';
+        if (status === "completed") return '<span class="status-badge status-completed"><i class="fas fa-check-double"></i> Completed</span>';
+        return '<span class="status-badge status-cancelled"><i class="fas fa-times-circle"></i> Cancelled</span>';
+    }
+
+    function renderBookings(filterStatus = "all", searchTerm = "") {
+        const container = document.getElementById("bookingsContainer");
+        let filtered = bookings.filter(b => {
+            const matchStatus = filterStatus === "all" || b.status === filterStatus;
+            const matchSearch = b.provider.toLowerCase().includes(searchTerm) || b.service.toLowerCase().includes(searchTerm);
+            return matchStatus && matchSearch;
+        });
+        if (filtered.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:40px;">No bookings match your criteria.</div>`;
+            return;
+        }
+        container.innerHTML = filtered.map(b => {
+            const showPayButton = (b.status === "pending" || b.status === "confirmed");
+            return `
+            <div class="booking-card" data-id="${b.id}">
+                <div class="card-header">
+                    <div class="avatar" style="background-image: url('${b.avatar}'); background-size: cover;"></div>
+                    <div class="booking-info">
+                        <div class="provider-name">${b.provider}</div>
+                        <div class="service-type">${b.service}</div>
+                        ${getStatusBadge(b.status)}
+                    </div>
+                </div>
+                <div class="booking-details">
+                    <div><i class="fas fa-calendar-day"></i> ${b.date}</div>
+                    <div><i class="fas fa-clock"></i> ${b.time}</div>
+                </div>
+                <div class="price">$${b.price}</div>
+                <hr>
+                <div class="action-buttons">
+                    ${showPayButton ? `<a href="payment.html" class="btn-pay"><i class="fas fa-credit-card"></i> Pay Now</a>` : ''}
+                    <button class="btn-outline" onclick="alert('View details for booking #${b.id}')">View Details</button>
+                    ${b.status === 'pending' ? '<button class="btn-danger" onclick="alert(\'Cancel booking request?\')">Cancel</button>' : ''}
+                </div>
+            </div>
+        `}).join("");
+    }
+
+    let currentFilter = "all";
+    let currentSearch = "";
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            currentFilter = btn.getAttribute("data-status");
+            renderBookings(currentFilter, currentSearch);
+        });
+    });
+    document.getElementById("searchBtn").addEventListener("click", () => {
+        currentSearch = document.getElementById("searchInput").value.toLowerCase();
+        renderBookings(currentFilter, currentSearch);
+    });
+    document.getElementById("searchInput").addEventListener("keyup", (e) => {
+        if(e.key === "Enter") {
+            currentSearch = e.target.value.toLowerCase();
+            renderBookings(currentFilter, currentSearch);
+        }
+    });
+    document.getElementById("seeAllLink").addEventListener("click", (e) => {
+        e.preventDefault();
+        currentFilter = "all";
+        currentSearch = "";
+        document.getElementById("searchInput").value = "";
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        document.querySelector(".filter-btn[data-status='all']").classList.add("active");
+        renderBookings("all", "");
+    });
+
+    renderBookings();
+</script>
+</body>
+</html>

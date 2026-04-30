@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Languages — BELG SERVICES</title>
+
+<style>
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f7f7f7;
+}
+
+/* NAV */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #003366;
+  padding: 12px 0;
+  text-align: center;
+  z-index: 999;
+}
+
+.top-nav a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+header {
+  margin-top: 100px;
+  text-align: center;
+}
+
+.logo {
+  width: 160px;
+}
+
+h1 {
+  color: #003366;
+  font-size: 32px;
+}
+
+/* GRID */
+.language-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.language-card {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.language-card:hover {
+  transform: scale(1.05);
+}
+
+.language-card img {
+  width: 40px;
+  height: 28px;
+  border-radius: 4px;
+}
+
+.language-card p {
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #003366;
+}
+
+/* SHOW MORE BUTTON */
+.show-more-btn {
+  display: block;
+  margin: 20px auto;
+  background: #f4c542;
+  padding: 12px 25px;
+  border-radius: 8px;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.show-more-btn:hover {
+  background: #e0b235;
+}
+
+/* FOOTER */
+.footer {
+  background: #003366;
+  color: white;
+  padding: 20px 10px;
+  text-align: center;
+  margin-top: 40px;
+  font-size: 14px;
+}
+
+.hidden {
+  display: none;
+}
+
+</style>
+
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <a href="index.html">Home</a>
+  <a href="languages.html">Languages</a>
+  <a href="settings.html">Settings</a>
+  <a href="dashboard.html">Dashboard</a>
+</nav>
+
+<!-- HEADER -->
+<header>
+  <img src="logo.png" class="logo">
+  <h1>Select Language</h1>
+</header>
+
+<!-- GRID — FIRST 12 LANGUAGES -->
+<div class="language-grid">
+
+  <div class="language-card"><img src="https://flagcdn.com/us.svg"><p>English</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/cn.svg"><p>Chinese</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/es.svg"><p>Spanish</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/sa.svg"><p>Arabic</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/in.svg"><p>Hindi</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/fr.svg"><p>French</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/pt.svg"><p>Portuguese</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/ru.svg"><p>Russian</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/jp.svg"><p>Japanese</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/de.svg"><p>German</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/tr.svg"><p>Turkish</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/ir.svg"><p>Persian</p></div>
+
+</div>
+
+<!-- SHOW MORE BUTTON -->
+<button class="show-more-btn" onclick="showMore()">Show More</button>
+
+<!-- HIDDEN LANGUAGES -->
+<div id="moreLanguages" class="language-grid hidden">
+
+  <div class="language-card"><img src="https://flagcdn.com/nl.svg"><p>Dutch</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/pl.svg"><p>Polish</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/ua.svg"><p>Ukrainian</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/ph.svg"><p>Filipino</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/vn.svg"><p>Vietnamese</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/tz.svg"><p>Swahili</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/th.svg"><p>Thai</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/id.svg"><p>Indonesian</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/ro.svg"><p>Romanian</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/gr.svg"><p>Greek</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/kr.svg"><p>Korean</p></div>
+  <div class="language-card"><img src="https://flagcdn.com/bd.svg"><p>Bengali</p></div>
+
+</div>
+
+<script>
+function showMore() {
+  document.getElementById("moreLanguages").classList.remove("hidden");
+}
+</script>
+
+<!-- FOOTER -->
+<footer class="footer">
+  © 2024 BELG SERVICES — All Rights Reserved
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>For Clients - BELG SERVICES</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fefcf5;
+            color: #1e2a2f;
+        }
+
+        /* Header Navigation */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: white;
+            border-bottom: 1px solid #f0e4d8;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-img {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+        }
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #c49a6c, #8b5a2b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #2c3e2f;
+            transition: 0.2s;
+        }
+        .nav-links a:hover { color: #c49a6c; }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #c49a6c, #a57c52);
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+        .page-header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Content Container */
+        .clients-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 32px;
+            margin-bottom: 60px;
+        }
+        .feature-card {
+            background: white;
+            border-radius: 28px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+            border: 1px solid #f0e4d8;
+            transition: 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px rgba(196,154,108,0.1);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #c49a6c;
+            margin-bottom: 20px;
+        }
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: #1e2a2f;
+        }
+        .feature-card p {
+            color: #6e5e4a;
+            line-height: 1.5;
+        }
+
+        /* How It Works */
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #1e2a2f;
+        }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        .step-card {
+            text-align: center;
+        }
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: #c49a6c;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+        .step-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        .step-card p {
+            color: #6e5e4a;
+            font-size: 0.85rem;
+        }
+
+        /* CTA Buttons */
+        .cta-section {
+            background: white;
+            border-radius: 32px;
+            padding: 48px;
+            text-align: center;
+            border: 1px solid #f0e4d8;
+            margin-top: 20px;
+        }
+        .cta-section h3 {
+            font-size: 1.6rem;
+            margin-bottom: 16px;
+        }
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+        .btn-primary {
+            background: #c49a6c;
+            color: white;
+            padding: 12px 32px;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary:hover {
+            background: #a57c52;
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #c49a6c;
+            color: #c49a6c;
+            padding: 12px 32px;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-outline:hover {
+            background: #c49a6c;
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e2f;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 16px 20px; flex-direction: column; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
+            .clients-container { padding: 40px 20px; }
+            .features-grid { gap: 20px; }
+            .cta-section { padding: 32px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="navbar">
+        <div class="logo-area">
+            <img src="logo.png" alt="BELG SERVICES" class="logo-img" onerror="this.src='https://placehold.co/50x50?text=BS'">
+            <span class="logo-text">BELG SERVICES</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="client.html" style="color:#c49a6c; font-weight:600;">For Clients</a></li>
+            <li><a href="worker-dashboard.html">Workers</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Everything You Need</h1>
+        <p>Discover why thousands of clients trust BELG SERVICES for their home and business needs</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="clients-container">
+        <!-- Features -->
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-clock"></i></div>
+                <h3>Fast & Reliable</h3>
+                <p>Get matched with vetted professionals within minutes. Same-day service available.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Fully Insured</h3>
+                <p>All workers and companies are background-checked and fully insured for your peace of mind.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-credit-card"></i></div>
+                <h3>Secure Payments</h3>
+                <p>Pay safely through our encrypted payment system. Your financial data is always protected.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                <h3>24/7 Support</h3>
+                <p>Our customer support team is available around the clock to assist you with any issues.</p>
+            </div>
+        </div>
+
+        <!-- How It Works -->
+        <h2 class="section-title">How It Works</h2>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h4>Post Your Request</h4>
+                <p>Tell us what service you need and when</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h4>Get Matched</h4>
+                <p>We connect you with the best professionals</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h4>Compare & Choose</h4>
+                <p>Review profiles, ratings, and prices</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h4>Book & Pay</h4>
+                <p>Confirm your booking and pay securely online</p>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="cta-section">
+            <h3>Ready to get started?</h3>
+            <p>Join thousands of satisfied clients who found their perfect service provider</p>
+            <div class="cta-buttons">
+                <a href="register.html" class="btn-primary"><i class="fas fa-user-plus"></i> Create Account</a>
+                <a href="worker-dashboard.html" class="btn-outline"><i class="fas fa-search"></i> Find Workers</a>
+                <a href="company-dashboard.html" class="btn-outline"><i class="fas fa-building"></i> Find Companies</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>© 2025 BELG SERVICES — Your Trusted Service Platform</p>
+    </div>
+
+</body>
+</html>

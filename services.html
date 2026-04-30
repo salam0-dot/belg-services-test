@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services - BELG SERVICES</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fefcf5; /* Changed to match index */
+            color: #1e2a2f;
+            line-height: 1.5;
+        }
+
+        /* Header Navigation - Matching index */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 40px;
+            background: white;
+            border-bottom: 1px solid #f0e4d8;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-img {
+            height: 52px;
+            width: auto;
+            object-fit: contain;
+        }
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #c49a6c, #8b5a2b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #2c3e2f;
+            transition: 0.2s;
+        }
+        .nav-links a:hover { color: #c49a6c; }
+        .contact-btn-nav {
+            background: #c49a6c;
+            color: white !important;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+        .contact-btn-nav:hover {
+            background: #a57c52;
+        }
+
+        /* Page Header - Golden gradient */
+        .page-header {
+            background: linear-gradient(135deg, #c49a6c, #a57c52);
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .page-header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 16px;
+        }
+        .page-header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Services Section */
+        .services-section {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #1e2a2f;
+        }
+        .section-subtitle {
+            text-align: center;
+            color: #6e5e4a;
+            margin-bottom: 48px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 32px;
+        }
+        .service-card {
+            background: white;
+            border-radius: 28px;
+            padding: 32px 24px;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+            border: 1px solid #f0e4d8;
+            transition: 0.3s;
+        }
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.12);
+        }
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .service-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #c49a6c;
+        }
+        .service-card p {
+            color: #5a6e4a;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e2f;
+            color: white;
+            text-align: center;
+            padding: 40px;
+            margin-top: 40px;
+        }
+        .footer p {
+            margin: 8px 0;
+            opacity: 0.8;
+        }
+        .footer a {
+            color: #c49a6c;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 20px; flex-direction: column; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
+            .services-section { padding: 40px 20px; }
+            .services-grid { grid-template-columns: 1fr; }
+            .page-header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar (identical to index) -->
+    <div class="navbar">
+        <div class="logo-area">
+            <img src="logo.png" alt="BELG SERVICES logo" class="logo-img" onerror="this.src='https://placehold.co/60x60?text=logo'">
+            <span class="logo-text">BELG SERVICES</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html" style="color:#c49a6c; font-weight:600;">Services</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="contact.html" class="contact-btn-nav">Get Quote</a></li>
+        </ul>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Our Services</h1>
+        <p>Professional on-demand services across Belgium</p>
+    </div>
+
+    <!-- Services Content -->
+    <div class="services-section">
+        <h2 class="section-title">What We Offer</h2>
+        <p class="section-subtitle">Tailored solutions for homes, offices, and businesses</p>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🏠</div>
+                <h3>Home Cleaning</h3>
+                <p>Professional cleaners for houses, apartments, and offices. Deep cleaning, regular cleaning, and move-out cleaning available.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🚚</div>
+                <h3>Moving Assistance</h3>
+                <p>Workers ready to help with packing, loading, unloading, and transport. Ideal for home moves, office moves, and furniture delivery.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🎨</div>
+                <h3>Painting & Renovation</h3>
+                <p>Skilled painters and renovation workers for all property types. Interior painting, wall repair, and full renovation support.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🪑</div>
+                <h3>Carpentry & Repairs</h3>
+                <p>Expert carpenters for furniture assembly, wood repairs, and home maintenance. Fast and reliable service for all repair needs.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">⚡</div>
+                <h3>Plumbing & Electrical</h3>
+                <p>Certified technicians for plumbing issues, electrical repairs, and installations. Safe, fast, and professional service.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🌿</div>
+                <h3>Garden & Outdoor Work</h3>
+                <p>Garden cleaning, trimming, planting, and outdoor maintenance. Perfect for homes, villas, and commercial spaces.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>© 2025 BELG SERVICES — All Rights Reserved</p>
+        <p>Contact: <a href="mailto:info@belg-services.com">info@belg-services.com</a></p>
+    </div>
+
+</body>
+</html>
