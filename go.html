@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BELG - Direct Sign Up (No Library)</title>
+    <style>
+        body { font-family: Arial; max-width: 400px; margin: 50px auto; padding: 20px; }
+        input, select, button { width: 100%; padding: 10px; margin: 8px 0; border-radius: 8px; border: 1px solid #ccc; }
+        button { background: #c49a6c; color: white; font-weight: bold; border: none; cursor: pointer; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h2>BELG SERVICES - Create Account</h2>
+    <input type="text" id="fullName" placeholder="Full Name">
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <select id="userType">
+        <option value="client">Client</option>
+        <option value="worker">Worker</option>
+        <option value="company">Company</option>
+    </select>
+    <button onclick="register()">Create Account</button>
+    <div id="message"></div>
+
+    <script>
+        const SUPABASE_URL = 'https://yljlpvotsysvppimmoxh.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_6iHIGUlF5Y9emm6ig238Vg_3he7bc-b';
+
+        async function register() {
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const userType = document.getElementById('userType').value;
+            const messageDiv = document.getElementById('message');
+            
+            if (!fullName || !email || !password) {
+                messageDiv.innerHTML = '<span class="error">Please fill in all fields</span>';
+                return;
+            }
+            
+            messageDiv.innerHTML = 'Creating account...';
+            
+            try {
+                // Step 1: Create user via Auth API
+                const response = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_ANON_KEY
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                        data: {
+                            full_name: fullName,
+                            user_type: userType
+                        }
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error_description || data.message || 'Registration failed');
+                }
+                
+                messageDiv.innerHTML = '<span class="success">✅ Account created successfully! Check your email to confirm.</span>';
+                console.log('User created:', data);
+                
+                // Clear form
+                document.getElementById('fullName').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('password').value = '';
+                
+            } catch (error) {
+                messageDiv.innerHTML = '<span class="error">❌ Error: ' + error.message + '</span>';
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
