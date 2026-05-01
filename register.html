@@ -11,8 +11,8 @@
         .error { color: red; }
         .success { color: green; }
     </style>
-    <!-- Appwrite Web SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.2/dist/umd/sdk.min.js"></script>
+    <!-- Appwrite Web SDK - إصدار أحدث -->
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.0/dist/umd/sdk.min.js"></script>
 </head>
 <body>
     <h2>BELG SERVICES - Create Account</h2>
@@ -28,24 +28,15 @@
     <div id="message"></div>
 
     <script>
-        // ==================================================
-        // 🔐 أدخل بيانات مشروعك هنا (ثلاثة أسطر فقط)
-        // ==================================================
+        // بيانات المشروع
         const PROJECT_ID = '69f4a75d0033d187d56c';
         const API_ENDPOINT = 'https://fra.cloud.appwrite.io/v1';
-        const API_KEY = 'standard_3766b7598f676853d8cbd6c53e2d5bb13a1870473d7cfaf26be1680da473c521d18f88e7e25ebc19fd7eb67c4582347779dfdd262ab8a041ad8a2b90efc1932c2d5140755caa5999999bb9f4c1145ee5c541598161f80bea2c329ee4c2140a708b5d437907e2d61e76b7bee5f93ca9d68115e01e4b78e3a88a843154725fbeb0';
         
         // تهيئة العميل
         const client = new Appwrite.Client();
-        client.setEndpoint(API_ENDPOINT)
-              .setProject(PROJECT_ID);
+        client.setEndpoint(API_ENDPOINT).setProject(PROJECT_ID);
         
         const account = new Appwrite.Account(client);
-        const database = new Appwrite.Databases(client);
-        
-        // اسم قاعدة البيانات و Collection
-        const DATABASE_ID = 'BELG_Main_Db';
-        const COLLECTION_ID = 'users';
         
         async function register() {
             const fullName = document.getElementById('fullName').value;
@@ -62,23 +53,12 @@
             messageDiv.innerHTML = 'Creating account...';
             
             try {
-                // 1. إنشاء مستخدم جديد
-                const user = await account.create('unique()', email, password, fullName);
-                
-                // 2. إنشاء جلسة (تسجيل دخول تلقائي)
-                await account.createEmailPasswordSession(email, password);
-                
-                // 3. إضافة بيانات إضافية في Collection 'users'
-                await database.createDocument(
-                    DATABASE_ID,
-                    COLLECTION_ID,
-                    'unique()',
-                    {
-                        full_name: fullName,
-                        email: email,
-                        user_type: userType,
-                        user_id: user.$id
-                    }
+                // إنشاء مستخدم جديد
+                const user = await account.create(
+                    'unique()', 
+                    email, 
+                    password, 
+                    fullName
                 );
                 
                 messageDiv.innerHTML = '<span class="success">✅ Account created successfully! You can now log in.</span>';
@@ -89,7 +69,7 @@
                 document.getElementById('email').value = '';
                 document.getElementById('password').value = '';
                 
-                // إعادة توجيه إلى صفحة تسجيل الدخول بعد 2 ثانية
+                // توجيه إلى صفحة تسجيل الدخول بعد 2 ثانية
                 setTimeout(() => {
                     window.location.href = 'login.html';
                 }, 2000);
