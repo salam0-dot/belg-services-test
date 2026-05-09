@@ -11,8 +11,9 @@
         .error { color: red; }
         .success { color: green; }
     </style>
-    <!-- Appwrite Web SDK - إصدار أحدث -->
-    <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.0/dist/umd/sdk.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
 </head>
 <body>
     <h2>BELG SERVICES - Create Account</h2>
@@ -24,21 +25,11 @@
         <option value="worker">Worker</option>
         <option value="company">Company</option>
     </select>
-    <button onclick="register()">Create Account</button>
+    <button onclick="handleRegister()">Create Account</button>
     <div id="message"></div>
 
     <script>
-        // بيانات المشروع
-        const PROJECT_ID = '69f4a75d0033d187d56c';
-        const API_ENDPOINT = 'https://fra.cloud.appwrite.io/v1';
-        
-        // تهيئة العميل
-        const client = new Appwrite.Client();
-        client.setEndpoint(API_ENDPOINT).setProject(PROJECT_ID);
-        
-        const account = new Appwrite.Account(client);
-        
-        async function register() {
+        async function handleRegister() {
             const fullName = document.getElementById('fullName').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -53,23 +44,16 @@
             messageDiv.innerHTML = 'Creating account...';
             
             try {
-                // إنشاء مستخدم جديد
-                const user = await account.create(
-                    'unique()', 
-                    email, 
-                    password, 
-                    fullName
-                );
+                // استخدام Auth.js الذي أنشأناه للربط مع Supabase
+                const data = await window.Auth.signUp(email, password, fullName, userType);
                 
                 messageDiv.innerHTML = '<span class="success">✅ Account created successfully! You can now log in.</span>';
-                console.log('User created:', user);
                 
                 // مسح الحقول
                 document.getElementById('fullName').value = '';
                 document.getElementById('email').value = '';
                 document.getElementById('password').value = '';
                 
-                // توجيه إلى صفحة تسجيل الدخول بعد 2 ثانية
                 setTimeout(() => {
                     window.location.href = 'login.html';
                 }, 2000);
