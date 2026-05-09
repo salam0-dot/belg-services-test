@@ -1,310 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Company Profile — BELG SERVICES</title>
-
-<style>
-
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background: #f7f7f7;
-}
-
-/* NAV */
-.top-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: #003366;
-  padding: 12px 0;
-  text-align: center;
-  z-index: 999;
-}
-
-.top-nav a {
-  color: white;
-  margin: 0 15px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-/* HEADER */
-header {
-  margin-top: 100px;
-  text-align: center;
-  padding: 20px;
-}
-
-.company-logo {
-  width: 140px;
-  height: 140px;
-  border-radius: 12px;
-  object-fit: cover;
-  border: 4px solid #003366;
-}
-
-h1 {
-  color: #003366;
-  font-size: 32px;
-  margin-top: 10px;
-}
-
-.rating {
-  color: #f4c542;
-  font-size: 20px;
-}
-
-/* INFO BOXES */
-.info-boxes {
-  max-width: 900px;
-  margin: 20px auto;
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.info-box {
-  flex: 1;
-  min-width: 200px;
-  background: white;
-  padding: 15px;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.info-box h3 {
-  margin: 0;
-  color: #003366;
-}
-
-.info-box p {
-  margin: 5px 0;
-  color: #444;
-}
-
-/* SECTIONS */
-.section {
-  max-width: 900px;
-  margin: 20px auto;
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.section h2 {
-  color: #003366;
-  margin-bottom: 10px;
-}
-
-/* GALLERY */
-.gallery {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.gallery img {
-  width: 150px;
-  height: 120px;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
-/* WORKERS */
-.worker-card {
-  display: flex;
-  gap: 15px;
-  background: #f1f1f1;
-  padding: 12px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-.worker-card img {
-  width: 70px;
-  height: 70px;
-  border-radius: 10px;
-  object-fit: cover;
-}
-
-.status {
-  font-weight: bold;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 13px;
-}
-
-.available { background: #28a745; color: white; }
-.unavailable { background: #dc3545; color: white; }
-.slow { background: #ff4444; color: white; }
-
-/* BUTTONS */
-.action-btn {
-  padding: 12px 20px;
-  background: #003366;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.action-btn:hover {
-  background: #002244;
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Profile — BELG SERVICES</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="api.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f7f7f7; }
+        .top-nav { position: fixed; top: 0; left: 0; width: 100%; background: #003366; padding: 12px 0; text-align: center; z-index: 999; }
+        .top-nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; font-size: 16px; }
+        header { margin-top: 100px; text-align: center; padding: 20px; }
+        .company-logo { width: 140px; height: 140px; border-radius: 12px; object-fit: cover; border: 4px solid #003366; background: #eee; }
+        h1 { color: #003366; font-size: 32px; margin-top: 10px; }
+        .rating { color: #f4c542; font-size: 20px; }
+        .info-boxes { max-width: 900px; margin: 20px auto; display: flex; gap: 15px; flex-wrap: wrap; }
+        .info-box { flex: 1; min-width: 200px; background: white; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .info-box h3 { margin: 0; color: #003366; }
+        .section { max-width: 900px; margin: 20px auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .section h2 { color: #003366; margin-bottom: 10px; }
+        .gallery { display: flex; gap: 10px; flex-wrap: wrap; }
+        .gallery img { width: 150px; height: 120px; border-radius: 8px; object-fit: cover; background: #eee; }
+        .action-btn { padding: 12px 20px; background: #003366; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; margin-right: 5px; }
+        .action-btn:hover { background: #002244; }
+    </style>
 </head>
-
 <body>
-<nav style="background:#111; padding:12px; display:flex; flex-wrap:wrap; gap:12px;">
-  <a href="index.html" style="color:white;">Home</a>
-  <a href="about.html" style="color:white;">About</a>
-  <a href="services.html" style="color:white;">Services</a>
-  <a href="contact.html" style="color:white;">Contact</a>
 
-  <a href="faq.html" style="color:white;">FAQ</a>
-  <a href="pricing.html" style="color:white;">Pricing</a>
-  <a href="payment.html" style="color:white;">Payment</a>
-
-  <a href="login.html" style="color:white;">Login</a>
-  <a href="register.html" style="color:white;">Register</a>
-
-  <a href="dashboard.html" style="color:white;">Dashboard</a>
-</nav>
-<!-- NAV -->
 <nav class="top-nav">
-  <a href="index.html">Home</a>
-  <a href="client.html">Find Worker</a>
-  <a href="company-profile.html">Companies</a>
-  <a href="worker-profile.html">Workers</a>
-  <a href="payment.html">Payment</a>
-  <a href="my-bookings.html">My Bookings</a>
-  <a href="notifications.html">Notifications</a>
+    <a href="index.html">Home</a>
+    <a href="company-dashboard.html">Companies</a>
+    <a href="payment.html">Payment</a>
 </nav>
 
-<!-- HEADER -->
 <header>
-  <img src="https://i.imgur.com/company-logo.png" class="company-logo">
-  <h1>CleanPro Services</h1>
-  <div class="rating">★★★★★ (4.8)</div>
+    <img id="compLogo" src="" class="company-logo" alt="Logo">
+    <h1 id="compName">Loading...</h1>
+    <div class="rating" id="compRating">★★★★★</div>
 </header>
 
-<!-- INFO BOXES -->
 <div class="info-boxes">
-  <div class="info-box">
-    <h3>Workers Available</h3>
-    <p>12</p>
-  </div>
-  <div class="info-box">
-    <h3>Completed Projects</h3>
-    <p>340+</p>
-  </div>
-  <div class="info-box">
-    <h3>Response Speed</h3>
-    <p>2 minutes</p>
-  </div>
-  <div class="info-box">
-    <h3>Flexibility</h3>
-    <p>High</p>
-  </div>
+    <div class="info-box"><h3>Projects</h3><p id="compProjects">0</p></div>
+    <div class="info-box"><h3>Response</h3><p>Fast</p></div>
+    <div class="info-box"><h3>Location</h3><p id="compAddress">-</p></div>
 </div>
 
-<!-- ABOUT COMPANY -->
 <div class="section">
-  <h2>About the Company</h2>
-  <p>
-    CleanPro Services is a professional cleaning and home services company operating across Belgium.
-    We provide high-quality services with trained workers, fast response, and excellent customer satisfaction.
-  </p>
+    <h2>About the Company</h2>
+    <p id="compBio">Loading information...</p>
 </div>
 
-<!-- SERVICES -->
 <div class="section">
-  <h2>Services Offered</h2>
-  <p>• Home Cleaning</p>
-  <p>• Deep Cleaning</p>
-  <p>• Office Cleaning</p>
-  <p>• Moving Assistance</p>
-  <p>• Painting & Repairs</p>
+    <h2>Completed Work</h2>
+    <div class="gallery" id="compGallery">
+        </div>
 </div>
 
-<!-- PARTNERS -->
 <div class="section">
-  <h2>Partnerships</h2>
-  <p>• IKEA Belgium</p>
-  <p>• Carrefour Market</p>
-  <p>• Local Real Estate Agencies</p>
-</div>
-
-<!-- GALLERY -->
-<div class="section">
-  <h2>Completed Work</h2>
-  <div class="gallery">
-    <img src="https://i.imgur.com/clean1.jpg">
-    <img src="https://i.imgur.com/clean2.jpg">
-    <img src="https://i.imgur.com/clean3.jpg">
-  </div>
-</div>
-
-<!-- CURRENT WORKERS -->
-<div class="section">
-  <h2>Current Workers</h2>
-
-  <div class="worker-card">
-    <img src="https://i.pravatar.cc/150?img=12">
-    <div>
-      <p><strong>Ahmed Ali</strong></p>
-      <p class="status available">🟢 Available</p>
-    </div>
-  </div>
-
-  <div class="worker-card">
-    <img src="https://i.pravatar.cc/150?img=22">
-    <div>
-      <p><strong>Mohamed Yassin</strong></p>
-      <p class="status slow">🔴 Slow Response</p>
-    </div>
-  </div>
-
-  <div class="worker-card">
-    <img src="https://i.pravatar.cc/150?img=33">
-    <div>
-      <p><strong>Youssef Karim</strong></p>
-      <p class="status unavailable">🔴 Not Available</p>
-    </div>
-  </div>
-
-</div>
-
-<!-- ACTION BUTTONS -->
-<div class="section">
-  <button class="action-btn" onclick="requestWorkers()">Request Temporary Workers</button>
-  <button class="action-btn" onclick="openChat()">Open Chat</button>
-  <button class="action-btn" onclick="rateCompany()">Rate Company</button>
+    <button class="action-btn" onclick="requestWorkers()">Book Service</button>
+    <button class="action-btn" onclick="openChat()">Open Chat</button>
 </div>
 
 <script>
-function requestWorkers() {
-  window.location.href = "payment.html";
-}
+    const sb = supabase.createClient(window.env.URL, window.env.KEY);
 
-function openChat() {
-  window.location.href = "chat.html";
-}
+    async function loadCompanyProfile() {
+        // الحصول على الـ ID من الرابط (مثلاً: company-profile.html?id=123)
+        const urlParams = new URLSearchParams(window.location.search);
+        const companyId = urlParams.get('id');
 
-function rateCompany() {
-  alert("Rating system will be added here.");
-}
+        if (!companyId) {
+            alert("No company selected");
+            return;
+        }
+
+        // 1. جلب بيانات البروفايل
+        const { data: profile, error } = await sb.from('profiles').select('*').eq('id', companyId).single();
+
+        if (profile) {
+            document.getElementById('compName').innerText = profile.full_name;
+            document.getElementById('compLogo').src = profile.avatar_url || 'https://via.placeholder.com/140';
+            document.getElementById('compBio').innerText = profile.bio || "No description available.";
+            document.getElementById('compAddress').innerText = profile.address || "Belgium";
+            document.getElementById('compRating').innerText = "★".repeat(Math.floor(profile.rating || 5)) + ` (${profile.rating || 5.0})`;
+        }
+
+        // 2. جلب صور المعرض
+        const { data: gallery } = await sb.from('work_gallery').select('*').eq('user_id', companyId);
+        if (gallery && gallery.length > 0) {
+            const galleryDiv = document.getElementById('compGallery');
+            galleryDiv.innerHTML = gallery.map(img => `<img src="${img.image_url}" alt="Work">`).join('');
+            document.getElementById('compProjects').innerText = gallery.length + "+";
+        }
+    }
+
+    function requestWorkers() { window.location.href = "payment.html"; }
+    function openChat() { window.location.href = "chat.html"; }
+
+    loadCompanyProfile();
 </script>
-
 </body>
 </html>
