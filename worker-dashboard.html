@@ -4,420 +4,142 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Worker Dashboard - BELG SERVICES</title>
-    <!-- Font Awesome -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="api.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #fefcf5; /* Changed to match index */
-            color: #1e2a2f;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 32px;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.08);
-            overflow: hidden;
-        }
-
-        /* Header with new color (golden) */
-        .header {
-            background: linear-gradient(135deg, #c49a6c, #a57c52); /* Changed from green to golden */
-            padding: 24px 28px;
-            color: white;
-        }
-
-        .header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        .search-area {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin: 20px 0 10px;
-        }
-
-        .search-box {
-            flex: 2;
-            display: flex;
-            background: white;
-            border-radius: 60px;
-            overflow: hidden;
-        }
-
-        .search-box input {
-            flex: 1;
-            padding: 14px 20px;
-            border: none;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .search-box button {
-            background: #c49a6c;
-            border: none;
-            padding: 0 24px;
-            color: white;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .search-box button:hover {
-            background: #a57c52;
-        }
-
-        .filter-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .filter-btn {
-            background: white;
-            border: 1px solid #c49a6c;
-            padding: 8px 20px;
-            border-radius: 40px;
-            color: #c49a6c;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .filter-btn.active, .filter-btn:hover {
-            background: #c49a6c;
-            color: white;
-        }
-
-        /* Main content */
-        .main-content {
-            padding: 28px;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 20px 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-        }
-
-        .see-all {
-            color: #c49a6c;
-            text-decoration: none;
-            font-size: 0.85rem;
-        }
-
-        .workers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-
-        .worker-card {
-            background: #ffffff;
-            border-radius: 28px;
-            padding: 20px;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
-            border: 1px solid #f0e4d8;
-            transition: 0.2s;
-            cursor: pointer;
-        }
-
-        .worker-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.12);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 14px;
-        }
-
-        .avatar {
-            width: 70px;
-            height: 70px;
-            background: #ddd;
-            border-radius: 50%;
-            background-size: cover;
-            background-position: center;
-            flex-shrink: 0;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 50px;
-        }
-
-        .status-available { background: #d4f5d0; color: #2e6b1f; }
-        .status-busy { background: #ffe0b3; color: #b45f06; }
-        .status-offline { background: #ffe0e0; color: #b33; }
-
-        .worker-name {
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-
-        .worker-title {
-            font-size: 0.8rem;
-            color: #6e5e4a;
-        }
-
-        .rating {
-            color: #f5b042;
-            margin: 8px 0;
-        }
-
-        .price {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #2c3e2f;
-        }
-
-        hr {
-            margin: 14px 0;
-            border: none;
-            border-top: 1px solid #ede3d7;
-        }
-
-        /* Two-tone button */
-        .view-profile-btn {
-            background: transparent;
-            border: 2px solid #c49a6c;
-            color: #c49a6c;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            width: 100%;
-            margin-top: 12px;
-        }
-        .view-profile-btn:hover {
-            background: #c49a6c;
-            color: white;
-        }
-
-        .bottom-nav {
-            display: flex;
-            justify-content: space-around;
-            background: white;
-            padding: 14px 20px;
-            border-top: 1px solid #ede3d7;
-            margin-top: 20px;
-        }
-
-        .nav-item {
-            text-align: center;
-            color: #8b7a67;
-            text-decoration: none;
-            font-size: 0.75rem;
-        }
-
-        .nav-item i {
-            font-size: 1.4rem;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .nav-item.active, .nav-item:hover {
-            color: #c49a6c;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #fefcf5; color: #1e2a2f; padding: 20px; }
+        .container { max-width: 1280px; margin: 0 auto; background: white; border-radius: 32px; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.08); overflow: hidden; }
         
-        /* Submit Request Button */
-        .submit-request {
-            background: #c49a6c;
-            border: none;
-            padding: 12px 32px;
-            border-radius: 40px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 20px auto 10px;
-            display: block;
-            width: fit-content;
-        }
-        .submit-request:hover {
-            background: #a57c52;
-        }
+        .header { background: linear-gradient(135deg, #c49a6c, #a57c52); padding: 24px 28px; color: white; }
+        .header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 16px; }
+        
+        .search-area { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0 10px; }
+        .search-box { flex: 2; display: flex; background: white; border-radius: 60px; overflow: hidden; }
+        .search-box input { flex: 1; padding: 14px 20px; border: none; font-size: 1rem; outline: none; }
+        .search-box button { background: #c49a6c; border: none; padding: 0 24px; color: white; cursor: pointer; }
 
-        @media (max-width: 680px) {
-            .workers-grid { grid-template-columns: 1fr; }
-            .search-area { flex-direction: column; }
-        }
+        .main-content { padding: 28px; }
+        .section-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: baseline; }
+        
+        .workers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-bottom: 40px; }
+        .worker-card { background: #ffffff; border-radius: 28px; padding: 20px; box-shadow: 0 6px 14px rgba(0,0,0,0.05); border: 1px solid #f0e4d8; transition: 0.2s; cursor: pointer; }
+        .worker-card:hover { transform: translateY(-5px); box-shadow: 0 20px 30px -12px rgba(0,0,0,0.12); }
+        
+        .avatar { width: 70px; height: 70px; border-radius: 50%; background-size: cover; background-position: center; border: 2px solid #c49a6c; }
+        .status-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 50px; background: #d4f5d0; color: #2e6b1f; }
+        
+        .view-profile-btn { background: transparent; border: 2px solid #c49a6c; color: #c49a6c; padding: 8px 16px; border-radius: 40px; font-weight: 600; width: 100%; margin-top: 12px; cursor: pointer; transition: 0.2s; }
+        .view-profile-btn:hover { background: #c49a6c; color: white; }
+
+        .bottom-nav { display: flex; justify-content: space-around; background: white; padding: 14px 20px; border-top: 1px solid #ede3d7; }
+        .nav-item { text-align: center; color: #8b7a67; text-decoration: none; font-size: 0.75rem; }
+        .nav-item i { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+        .nav-item.active { color: #c49a6c; }
+
+        .loading-spinner { text-align: center; padding: 50px; color: #c49a6c; font-weight: bold; }
     </style>
 </head>
 <body>
 <div class="container">
-<div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 28px; background: white; border-bottom: 1px solid #f0e4d8;">
-    <div style="display: flex; align-items: center; gap: 12px;">
-        <img src="logo.png" alt="BELG SERVICES" style="height: 40px;">
-        <span style="font-size: 1.4rem; font-weight: 800; background: linear-gradient(135deg, #c49a6c, #8b5a2b); -webkit-background-clip: text; background-clip: text; color: transparent;">BELG SERVICES</span>
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 28px; background: white; border-bottom: 1px solid #f0e4d8;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="logo.png" alt="logo" style="height: 40px;" onerror="this.src='https://placehold.co/40x40?text=BS'">
+            <span style="font-size: 1.4rem; font-weight: 800; background: linear-gradient(135deg, #c49a6c, #8b5a2b); -webkit-background-clip: text; background-clip: text; color: transparent;">BELG SERVICES</span>
+        </div>
+        <ul style="display: flex; gap: 28px; list-style: none; align-items: center;">
+            <li><a href="index.html" style="text-decoration: none; color: #2c3e2f;">Home</a></li>
+            <li><a href="worker-dashboard.html" style="text-decoration: none; color: #c49a6c; font-weight: 600;">Workers</a></li>
+            <li><a href="contact.html" style="text-decoration: none; color: #2c3e2f;">Contact</a></li>
+        </ul>
     </div>
-    <ul style="display: flex; gap: 28px; list-style: none; align-items: center;">
-        <li><a href="index.html" style="text-decoration: none; color: #2c3e2f;">Home</a></li>
-        <li><a href="services.html" style="text-decoration: none; color: #2c3e2f;">Services</a></li>
-        <li><a href="about.html" style="text-decoration: none; color: #2c3e2f;">About</a></li>
-        <li><a href="worker-dashboard.html" style="text-decoration: none; color: #c49a6c; font-weight: 600;">Workers</a></li>
-        <li><a href="settings.html" style="font-size: 1.2rem; text-decoration: none; color: #2c3e2f;"><i class="fas fa-cog"></i></a></li>
-        <li><a href="contact.html" style="text-decoration: none; color: #2c3e2f;">Contact</a></li>
-    </ul>
-</div>
+
     <div class="header">
-        <h1><i class="fas fa-briefcase"></i> Worker Dashboard</h1>
+        <h1><i class="fas fa-user-hard-hat"></i> Find Skilled Workers</h1>
         <div class="search-area">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search for services... (Cleaning, Moving, Painting, Carpentry)">
+                <input type="text" id="workerSearch" placeholder="Search by name or skill (e.g. Painter, Cleaner)...">
                 <button id="searchBtn"><i class="fas fa-search"></i></button>
-            </div>
-            <div class="filter-buttons">
-                <button class="filter-btn active" data-cat="all">All</button>
-                <button class="filter-btn" data-cat="Cleaning">Cleaning</button>
-                <button class="filter-btn" data-cat="Moving">Moving</button>
-                <button class="filter-btn" data-cat="Painting">Painting</button>
-                <button class="filter-btn" data-cat="Carpentry">Carpentry</button>
             </div>
         </div>
     </div>
 
     <div class="main-content">
-        <div class="section-title">
-            Available Now Workers
-            <a href="#" class="see-all" id="seeAllLink">See All ></a>
+        <div class="section-title">Verified Professionals</div>
+        <div class="workers-grid" id="workersContainer">
+            <div class="loading-spinner">Loading expert workers...</div>
         </div>
-        <div class="workers-grid" id="workersContainer"></div>
-        <button class="submit-request" id="submitRequestBtn">+ Submit Request</button>
     </div>
 
     <div class="bottom-nav">
-        <a href="worker-dashboard.html" class="nav-item active"><i class="fas fa-home"></i> Home</a>
-        <a href="my-bookings.html" class="nav-item"><i class="fas fa-clipboard-list"></i> Requests</a>
+        <a href="worker-dashboard.html" class="nav-item active"><i class="fas fa-search"></i> Discover</a>
         <a href="chat.html" class="nav-item"><i class="fas fa-comment-dots"></i> Messages</a>
-        <a href="worker-profile.html" class="nav-item"><i class="fas fa-user"></i> Profile</a>
+        <a href="dashboard.html" class="nav-item"><i class="fas fa-user-cog"></i> My Account</a>
     </div>
 </div>
 
 <script>
-    // Worker data (unchanged)
-    const workers = [
-        { id: 1, name: "Sarah M.", title: "House Cleaner", category: "Cleaning", price: 25, rating: 4.9, status: "available", avatar: "https://randomuser.me/api/portraits/women/1.jpg", bio: "Professional cleaning with eco products." },
-        { id: 2, name: "Mike R.", title: "Mover & Driver", category: "Moving", price: 40, rating: 4.8, status: "available", avatar: "https://randomuser.me/api/portraits/men/2.jpg", bio: "Fast and careful moving service." },
-        { id: 3, name: "Luis G.", title: "Painter", category: "Painting", price: 35, rating: 4.7, status: "slow", avatar: "https://randomuser.me/api/portraits/men/3.jpg", bio: "Interior & exterior painting expert." },
-        { id: 4, name: "Jen S.", title: "Carpenter", category: "Carpentry", price: 50, rating: 5.0, status: "available", avatar: "https://randomuser.me/api/portraits/women/4.jpg", bio: "Custom furniture & repairs." },
-        { id: 5, name: "Anna L.", title: "Cleaner / Organizer", category: "Cleaning", price: 35, rating: 4.8, status: "available", avatar: "https://randomuser.me/api/portraits/women/5.jpg", bio: "Deep cleaning and home organization." },
-        { id: 6, name: "Carlos M.", title: "Electrician", category: "Moving", price: 55, rating: 4.9, status: "offline", avatar: "https://randomuser.me/api/portraits/men/6.jpg", bio: "Licensed electrician, 10 years exp." }
-    ];
+    const sb = supabase.createClient(window.env.URL, window.env.KEY);
 
-    function getStatusIcon(status) {
-        if (status === "available") return '<span class="status-badge status-available"><i class="fas fa-circle"></i> Available Now</span>';
-        if (status === "slow") return '<span class="status-badge status-busy"><i class="fas fa-circle"></i> Slow response</span>';
-        return '<span class="status-badge status-offline"><i class="fas fa-circle"></i> Unavailable</span>';
-    }
+    async function fetchWorkers() {
+        const container = document.getElementById('workersContainer');
+        
+        // جلب المستخدمين الذين دورهم 'worker' من Supabase
+        const { data: workers, error } = await sb
+            .from('profiles')
+            .select('*')
+            .eq('role', 'worker');
 
-    function renderWorkers(filterCat = "all", searchTerm = "") {
-        const container = document.getElementById("workersContainer");
-        let filtered = workers.filter(w => {
-            const matchCat = filterCat === "all" || w.category === filterCat;
-            const matchSearch = w.name.toLowerCase().includes(searchTerm) || w.title.toLowerCase().includes(searchTerm) || w.category.toLowerCase().includes(searchTerm);
-            return matchCat && matchSearch;
-        });
-        if (filtered.length === 0) {
-            container.innerHTML = `<div style="text-align:center; padding:40px;">No workers match your criteria.</div>`;
+        if (error) {
+            container.innerHTML = `<p style="color:red; text-align:center;">Error loading workers. Please refresh.</p>`;
             return;
         }
-        container.innerHTML = filtered.map(w => `
-            <div class="worker-card" data-id="${w.id}">
-                <div class="card-header">
-                    <div class="avatar" style="background-image: url('${w.avatar}'); background-size: cover;"></div>
-                    <div>
-                        <div class="worker-name">${w.name}</div>
-                        <div class="worker-title">${w.title}</div>
-                        ${getStatusIcon(w.status)}
-                    </div>
-                </div>
-                <div class="rating"><i class="fas fa-star"></i> ${w.rating} ★</div>
-                <div class="price">$${w.price}/hr</div>
-                <hr>
-                <div style="font-size:0.8rem; color:#6f5e49;"><i class="fas fa-briefcase"></i> ${w.bio.substring(0, 60)}</div>
-                <button class="view-profile-btn" data-id="${w.id}">View Profile →</button>
-            </div>
-        `).join("");
 
-        document.querySelectorAll(".view-profile-btn").forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                const id = btn.getAttribute("data-id");
-                const worker = workers.find(w => w.id == id);
-                if (worker) {
-                    alert(`📍 ${worker.name}\n👤 ${worker.title}\n⭐ Rating: ${worker.rating}\n💰 $${worker.price}/hr\n📝 ${worker.bio}\n(Full profile page coming soon)`);
-                }
-            });
-        });
-        document.querySelectorAll(".worker-card").forEach(card => {
-            card.addEventListener("click", (e) => {
-                if(e.target.classList.contains("view-profile-btn")) return;
-                const id = card.getAttribute("data-id");
-                const worker = workers.find(w => w.id == id);
-                if (worker) alert(`📋 More about ${worker.name}\n${worker.bio}\n⭐ ${worker.rating} stars\n💰 $${worker.price}/hour`);
-            });
-        });
+        if (workers.length === 0) {
+            container.innerHTML = `<p style="text-align:center; grid-column: 1/-1;">No workers registered yet.</p>`;
+            return;
+        }
+
+        renderList(workers);
     }
 
-    let currentFilter = "all";
-    let currentSearch = "";
-    document.querySelectorAll(".filter-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-            document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            currentFilter = btn.getAttribute("data-cat");
-            renderWorkers(currentFilter, currentSearch);
+    function renderList(list) {
+        const container = document.getElementById('workersContainer');
+        container.innerHTML = list.map(w => `
+            <div class="worker-card" onclick="window.location.href='worker-profile.html?id=${w.id}'">
+                <div class="card-header">
+                    <div class="avatar" style="background-image: url('${w.avatar_url || 'https://via.placeholder.com/150'}')"></div>
+                    <div>
+                        <div class="worker-name">${w.full_name}</div>
+                        <div class="status-badge"><i class="fas fa-check-circle"></i> Verified</div>
+                    </div>
+                </div>
+                <div style="font-size: 0.9rem; color: #6e5e4a; margin: 10px 0; height: 40px; overflow: hidden;">
+                    ${w.bio || 'Expert service provider ready to help with your next project.'}
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                    <span style="font-weight: 800; color: #a57c52;">Professional</span>
+                    <span style="color: #f5b042;"><i class="fas fa-star"></i> ${w.rating || '5.0'}</span>
+                </div>
+                <button class="view-profile-btn">View Profile →</button>
+            </div>
+        `).join('');
+    }
+
+    // نظام البحث الحي
+    document.getElementById('workerSearch').addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const cards = document.querySelectorAll('.worker-card');
+        cards.forEach(card => {
+            const name = card.querySelector('.worker-name').innerText.toLowerCase();
+            card.style.display = name.includes(term) ? 'block' : 'none';
         });
     });
-    document.getElementById("searchBtn").addEventListener("click", () => {
-        currentSearch = document.getElementById("searchInput").value.toLowerCase();
-        renderWorkers(currentFilter, currentSearch);
-    });
-    document.getElementById("searchInput").addEventListener("keyup", (e) => {
-        if(e.key === "Enter") {
-            currentSearch = e.target.value.toLowerCase();
-            renderWorkers(currentFilter, currentSearch);
-        }
-    });
-    document.getElementById("submitRequestBtn").addEventListener("click", () => {
-        alert("Submit a service request form will open here.");
-    });
-    document.getElementById("seeAllLink").addEventListener("click", (e) => {
-        e.preventDefault();
-        currentFilter = "all";
-        currentSearch = "";
-        document.getElementById("searchInput").value = "";
-        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-        document.querySelector(".filter-btn[data-cat='all']").classList.add("active");
-        renderWorkers("all", "");
-    });
 
-    renderWorkers();
+    fetchWorkers();
 </script>
 </body>
 </html>
