@@ -2,178 +2,133 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - BELG SERVICES</title>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="api.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #fefcf5;
-            color: #1e2a2f;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            background: white;
-            border-bottom: 1px solid #f0e4d8;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .logo-img {
-            height: 45px;
-            width: auto;
-            object-fit: contain;
-        }
-        .logo-text {
-            font-size: 1.6rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #c49a6c, #8b5a2b);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .nav-links {
-            display: flex;
-            gap: 28px;
-            list-style: none;
-            align-items: center;
-        }
-        .nav-links a {
-            text-decoration: none;
-            font-weight: 500;
-            color: #2c3e2f;
-            transition: 0.2s;
-        }
-        .nav-links a:hover { color: #c49a6c; }
-
-        .dashboard-container {
-            max-width: 1280px;
-            margin: 40px auto;
-            padding: 0 24px;
-        }
-
-        .welcome-section {
-            background: linear-gradient(135deg, #c49a6c, #a57c52);
-            border-radius: 32px;
-            padding: 32px;
-            color: white;
-            margin-bottom: 32px;
-        }
-        .welcome-section h1 {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-        .stat-card {
-            background: white;
-            border-radius: 28px;
-            padding: 24px;
-            text-align: center;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
-            border: 1px solid #f0e4d8;
-        }
-        .stat-icon {
-            font-size: 2.5rem;
-            color: #c49a6c;
-            margin-bottom: 16px;
-        }
-        .stat-number {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #1e2a2f;
-        }
-        .stat-label {
-            color: #8b7a67;
-            margin-top: 8px;
-        }
-
-        .footer {
-            background: #2c3e2f;
-            color: white;
-            text-align: center;
-            padding: 30px;
-            margin-top: 60px;
-        }
-
-        @media (max-width: 768px) {
-            .navbar { padding: 16px 20px; flex-direction: column; }
-            .nav-links { flex-wrap: wrap; justify-content: center; }
-        }
+        body { font-family: 'Inter', sans-serif; background: #fefcf5; margin: 0; padding: 0; }
+        nav { background: #c49a6c; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .container { max-width: 1000px; margin: 30px auto; padding: 20px; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        h2 { color: #c49a6c; margin-top: 0; }
+        input, textarea, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
+        button { background: #c49a6c; color: white; border: none; font-weight: bold; cursor: pointer; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .gallery-item { border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        .gallery-item img { width: 100%; height: 150px; object-fit: cover; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="navbar">
-        <div class="logo-area">
-            <img src="logo.png" alt="BELG SERVICES" class="logo-img" onerror="this.src='https://placehold.co/50x50?text=BS'">
-            <span class="logo-text">BELG SERVICES</span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="settings.html" style="font-size: 1.2rem;"><i class="fas fa-cog"></i></a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
+<nav>
+    <div style="font-weight: bold; font-size: 20px;">BELG SERVICES</div>
+    <button onclick="logout()" style="width: auto; background: #a57c52;">Logout</button>
+</nav>
+
+<div class="container">
+    <div class="card">
+        <h2 id="welcomeMsg">Welcome</h2>
+        <p id="userRoleBadge" style="display: inline-block; padding: 5px 15px; background: #e1d5c6; border-radius: 20px; font-size: 12px;"></p>
     </div>
 
-    <div class="dashboard-container">
-        <div class="welcome-section">
-            <h1>Welcome back, Admin 👋</h1>
-            <p>Here's what's happening with your platform today.</p>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-users"></i></div>
-                <div class="stat-number">2,450</div>
-                <div class="stat-label">Total Clients</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-hard-hat"></i></div>
-                <div class="stat-number">860</div>
-                <div class="stat-label">Verified Workers</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-building"></i></div>
-                <div class="stat-number">320</div>
-                <div class="stat-label">Partner Companies</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
-                <div class="stat-number">1,250</div>
-                <div class="stat-label">Bookings Completed</div>
-            </div>
-        </div>
+    <div id="socialSection" class="card hidden">
+        <h2>Social Media Links</h2>
+        <input type="text" id="instaLink" placeholder="Instagram URL">
+        <input type="text" id="fbLink" placeholder="Facebook URL">
+        <input type="text" id="waNumber" placeholder="WhatsApp Number">
+        <button onclick="saveSocial()">Update Links</button>
     </div>
 
-    <div class="footer">
-        <p>© 2025 BELG SERVICES — Dashboard Overview</p>
+    <div id="gallerySection" class="card hidden">
+        <h2>Work Gallery</h2>
+        <input type="text" id="imgUrl" placeholder="Image URL">
+        <input type="text" id="imgTitle" placeholder="Project Title">
+        <button onclick="uploadPhoto()">Add Photo</button>
+        <div id="galleryGrid" class="grid" style="margin-top: 20px;"></div>
     </div>
 
+    <div class="card">
+        <h2>Profile Details</h2>
+        <input type="text" id="dispName" placeholder="Full Name">
+        <textarea id="bioText" placeholder="Bio / Description"></textarea>
+        <button onclick="saveProfile()">Save Changes</button>
+    </div>
+</div>
+
+<script>
+    const sb = supabase.createClient(window.env.URL, window.env.KEY);
+    let currentUser = null;
+
+    async function init() {
+        const { data: { user } } = await sb.auth.getUser();
+        if (!user) { window.location.href = 'login.html'; return; }
+        currentUser = user;
+
+        const profile = await window.API.getProfile(user.id);
+        
+        document.getElementById('welcomeMsg').innerText = `Welcome, ${profile.full_name}`;
+        document.getElementById('userRoleBadge').innerText = profile.role.toUpperCase();
+        document.getElementById('dispName').value = profile.full_name || '';
+        document.getElementById('bioText').value = profile.bio || '';
+
+        if (profile.role === 'worker' || profile.role === 'company') {
+            document.getElementById('socialSection').classList.remove('hidden');
+            document.getElementById('gallerySection').classList.remove('hidden');
+            document.getElementById('instaLink').value = profile.instagram_url || '';
+            document.getElementById('fbLink').value = profile.facebook_url || '';
+            document.getElementById('waNumber').value = profile.whatsapp_number || '';
+            loadGallery();
+        }
+    }
+
+    async function saveProfile() {
+        const updates = {
+            full_name: document.getElementById('dispName').value,
+            bio: document.getElementById('bioText').value,
+            updated_at: new Date()
+        };
+        await window.API.updateProfile(currentUser.id, updates);
+        alert('Profile Updated');
+    }
+
+    async function saveSocial() {
+        const updates = {
+            instagram_url: document.getElementById('instaLink').value,
+            facebook_url: document.getElementById('fbLink').value,
+            whatsapp_number: document.getElementById('waNumber').value
+        };
+        await window.API.updateProfile(currentUser.id, updates);
+        alert('Links Updated');
+    }
+
+    async function uploadPhoto() {
+        const url = document.getElementById('imgUrl').value;
+        const title = document.getElementById('imgTitle').value;
+        if (!url) return;
+        await window.API.uploadWork(currentUser.id, url, title);
+        loadGallery();
+    }
+
+    async function loadGallery() {
+        const photos = await window.API.getGallery(currentUser.id);
+        const grid = document.getElementById('galleryGrid');
+        grid.innerHTML = photos.map(p => `
+            <div class="gallery-item">
+                <img src="${p.image_url}">
+                <p style="padding: 5px; font-size: 12px; margin: 0;">${p.title || ''}</p>
+            </div>
+        `).join('');
+    }
+
+    async function logout() {
+        await sb.auth.signOut();
+        window.location.href = 'index.html';
+    }
+
+    init();
+</script>
 </body>
 </html>
