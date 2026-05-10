@@ -1,3 +1,4 @@
+// api.js
 const sb = supabase.createClient(window.env.URL, window.env.KEY);
 
 const API = {
@@ -10,7 +11,7 @@ const API = {
     async updateProfile(userId, updateData) {
         const { data, error } = await sb.from('profiles').update(updateData).eq('id', userId);
         if (error) throw error;
-        return data;
+        return true;
     },
 
     async getGallery(userId) {
@@ -20,9 +21,7 @@ const API = {
     },
 
     async uploadWork(userId, imageUrl, title) {
-        const { data, error } = await sb.from('work_gallery').insert([
-            { user_id: userId, image_url: imageUrl, title: title }
-        ]);
+        const { data, error } = await sb.from('work_gallery').insert([{ user_id: userId, image_url: imageUrl, title: title }]);
         if (error) throw error;
         return data;
     },
