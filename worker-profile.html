@@ -4,374 +4,191 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Worker Profile - BELG SERVICES</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="api.js"></script>
+    <script src="auth.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f0f8ff;
-            color: #1e2a2f;
-            /* Removed padding and centering that caused top space */
-        }
-
-        .profile-container {
-            max-width: 1100px;
-            width: 100%;
-            margin: 0 auto;
-            background: white;
-            border-radius: 48px;
-            overflow: hidden;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
-            /* Removed any top margin */
-        }
-
-    
-        /* Cover Area - Smaller */
-.cover-area {
-    background: linear-gradient(135deg, #87CEEB, #A0D2EB);
-    height: 65px;  /* Changed from 100px */
-    position: relative;
-}
-
-.cover-text {
-    text-align: center;
-    color: white;
-    font-weight: 700;
-    font-size: 0.7rem;  /* Changed from 0.9rem */
-    letter-spacing: 1.5px;  /* Slightly reduced */
-    padding-top: 8px;  /* Changed from 15px */
-    text-transform: uppercase;
-}
-.cover-text p {
-    margin: 2px 0;
-}
-        }
-
-        /* Avatar section - positioned correctly */
-        .avatar-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: -30px;
-            margin-bottom: 20px;
-        }
-        .avatar-wrapper {
-            width: 120px;
-            height: 120px;
-            background-color: #e0e0e0;
-            border-radius: 50%;
-            border: 4px solid white;
-            background-size: cover;
-            background-position: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            margin-bottom: 12px;
-        }
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            padding: 6px 20px;
-            border-radius: 50px;
-            background: #d4f5d0;
-            color: #2e6b1f;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
-
-        .profile-content {
-            padding: 0 28px 40px 28px;
-        }
-
-        .name-section {
-            text-align: center;
-            margin: 20px 0 8px;
-        }
-        .worker-name {
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin-bottom: 6px;
-        }
-        .worker-location {
-            color: #6e5e4a;
-            margin-bottom: 12px;
-            font-size: 0.85rem;
-        }
-        .rating {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 30px;
-            font-size: 0.9rem;
-        }
-        .stars {
-            color: #f5b042;
-            letter-spacing: 2px;
-        }
-
-        .info-grid {
-            background: #f9f9f9;
-            border-radius: 28px;
-            padding: 24px;
-            margin: 30px 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 16px;
-            color: #1a1a1a;
-            font-weight: 500;
-        }
-        .info-item {
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .info-label {
-            font-weight: 700;
-            min-width: 110px;
-            color: #1a1a1a;
-        }
-        .info-value {
-            color: #1a1a1a;
-        }
-
-        .section-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin: 30px 0 16px 0;
-            border-left: 5px solid #87CEEB;
-            padding-left: 14px;
-        }
-
-        .services-list {
-            background: #faf7f2;
-            border-radius: 28px;
-            padding: 8px 0;
-        }
-        .service-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 14px 20px;
-            border-bottom: 1px solid #e9dfd3;
-        }
-        .service-name i {
-            color: #87CEEB;
-            width: 28px;
-        }
-        .service-price {
-            font-weight: 700;
-            color: #2c3e2f;
-        }
-
-        .badge-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin: 20px 0 15px;
-        }
-        .badge {
-            background: #f0e9e1;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        .badge i {
-            margin-right: 6px;
-            color: #87CEEB;
-        }
-
-        .action-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            margin: 30px 0 25px;
-        }
-        .action-btn-small {
-            flex: 1;
-            text-align: center;
-            background: #A0D2EB;
-            border: none;
-            padding: 12px;
-            font-weight: 600;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: 0.2s;
-            text-decoration: none;
-            color: #1e2a2f;
-            font-size: 0.85rem;
-        }
-        .action-btn-small:hover {
-            background: #87CEEB;
-            transform: translateY(-2px);
-        }
-
-        .blue-stripe {
-            background: #87CEEB;
-            height: 4px;
-            width: 70px;
-            margin: 35px 0 20px;
-            border-radius: 4px;
-        }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 16px;
-            margin: 20px 0 35px;
-        }
-        .gallery img {
-            width: 100%;
-            height: 130px;
-            object-fit: cover;
-            border-radius: 20px;
-            cursor: pointer;
-            border: 2px solid #e0e7ff;
-            transition: 0.2s;
-        }
-        .gallery img:hover {
-            transform: scale(1.02);
-        }
-
-        .book-btn {
-            background: #87CEEB;
-            border: none;
-            width: 100%;
-            padding: 16px;
-            font-size: 1rem;
-            font-weight: 700;
-            border-radius: 60px;
-            color: #1e2a2f;
-            margin: 20px 0 15px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .book-btn:hover {
-            background: #6bb5d4;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin: 20px 0 15px;
-            text-decoration: none;
-            color: #87CEEB;
-            font-weight: 500;
-        }
-
-        @media (max-width: 680px) {
-            .profile-content { padding: 0 20px 30px; }
-            .worker-name { font-size: 1.5rem; }
-            .avatar-wrapper { width: 100px; height: 100px; }
-            .action-row { flex-direction: column; }
-            .info-grid { padding: 18px; }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #fefcf5; color: #1e2a2f; }
+        .container { max-width: 1000px; margin: 20px auto; background: white; border-radius: 32px; overflow: hidden; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.08); }
+        .cover { height: 180px; background: linear-gradient(135deg, #c49a6c, #a57c52); }
+        .profile-header { padding: 0 28px 28px; text-align: center; margin-top: -60px; }
+        .avatar { width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; background: white; margin: 0 auto 15px; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: #f0e4d8; }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar i { font-size: 60px; color: #c49a6c; }
+        h1 { font-size: 1.8rem; margin-bottom: 5px; }
+        .profession { color: #c49a6c; font-weight: 600; margin-bottom: 10px; }
+        .rating { color: #f5b042; margin-bottom: 15px; }
+        .status { display: inline-block; padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; margin: 10px 0; }
+        .status.available { background: #d4f5d0; color: #2e6b1f; }
+        .status.busy { background: #ffe0e0; color: #c44; }
+        .section { padding: 20px 28px; border-top: 1px solid #f0e4d8; }
+        .section h3 { margin-bottom: 15px; color: #c49a6c; }
+        .skills { display: flex; flex-wrap: wrap; gap: 8px; }
+        .skill-tag { background: #f0e4d8; padding: 6px 16px; border-radius: 30px; font-size: 0.85rem; }
+        .pricing { display: flex; gap: 20px; flex-wrap: wrap; }
+        .price-card { background: #fefcf5; padding: 15px; border-radius: 20px; flex: 1; text-align: center; }
+        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+        .portfolio-item { border-radius: 16px; overflow: hidden; border: 1px solid #f0e4d8; }
+        .portfolio-item img, .portfolio-item video { width: 100%; height: 120px; object-fit: cover; }
+        .reviews { margin-top: 20px; }
+        .review { background: #fefcf5; padding: 15px; border-radius: 20px; margin-bottom: 10px; }
+        .contact-btn { background: #c49a6c; color: white; border: none; padding: 14px 30px; border-radius: 50px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 15px; }
+        .back-btn { background: transparent; border: 2px solid #c49a6c; color: #c49a6c; padding: 10px 20px; border-radius: 40px; cursor: pointer; margin-bottom: 15px; }
+        @media (max-width: 768px) { .container { margin: 10px; } .pricing { flex-direction: column; } }
     </style>
 </head>
 <body>
-<!-- Cover Area - Light Blue (Smaller) -->
-<div class="cover-area">
-    <div class="cover-text">
-        <p>🚀 WE WORK FOR YOUR COMFORT</p>
-        <p>❤️ WE ARE HAPPY TO SATISFY YOU</p>
+<div class="container">
+    <div style="padding: 15px 28px 0;">
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i> Back</button>
     </div>
-</div>
-
-    <div class="avatar-container">
-        <div class="avatar-wrapper" id="workerAvatar" style="background-image: url('https://randomuser.me/api/portraits/men/32.jpg');"></div>
-        <div class="status-badge"><i class="fas fa-circle"></i> Available Now</div>
+    <div class="cover"></div>
+    <div class="profile-header" id="profileHeader">
+        <div class="avatar" id="avatar">
+            <i class="fas fa-user"></i>
+        </div>
+        <h1 id="workerName">Loading...</h1>
+        <div class="profession" id="profession"></div>
+        <div class="rating" id="rating"></div>
+        <div class="status" id="status">Loading...</div>
     </div>
-
-    <div class="profile-content">
-        <a href="worker-dashboard.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Workers</a>
-
-        <div class="name-section">
-            <div class="worker-name" id="workerName">Mike R.</div>
-            <div class="worker-location" id="workerLocation"><i class="fas fa-map-marker-alt"></i> United States · Speaks English, Spanish</div>
-        </div>
-
-        <div class="rating">
-            <span class="stars">★★★★☆</span> 
-            <span id="ratingValue">4.8 (103 reviews)</span>
-        </div>
-
-        <div class="info-grid">
-            <div class="info-item"><span class="info-label">Skills :</span><span class="info-value">Electrician, Maintenance Technician</span></div>
-            <div class="info-item"><span class="info-label">Age :</span><span class="info-value">35 years</span></div>
-            <div class="info-item"><span class="info-label">Driver License :</span><span class="info-value">B</span></div>
-            <div class="info-item"><span class="info-label">Address :</span><span class="info-value">Liège, Belgem, Rue Hesbaye 75</span></div>
-            <div class="info-item"><span class="info-label">Vehicle :</span><span class="info-value">Scooter, Bicycle</span></div>
-            <div class="info-item"><span class="info-label">Notes :</span><span class="info-value">Available on public holidays, 24/7</span></div>
-        </div>
-
-        <div class="action-row">
-            <button class="action-btn-small" id="portfolioBtn"><i class="fas fa-images"></i> Completed Work Photos</button>
-            <button class="action-btn-small" id="uploadBtn"><i class="fas fa-upload"></i> Upload Photos</button>
-        </div>
-
-        <div class="section-title"><i class="fas fa-tools"></i> Services Offered</div>
-        <div class="services-list" id="servicesList"></div>
-
-        <div class="section-title"><i class="fas fa-check-circle"></i> Credentials</div>
-        <div class="badge-group" id="badgesContainer"></div>
-
-        <div class="blue-stripe"></div>
-        <div class="section-title"><i class="fas fa-camera"></i> Work Gallery</div>
-        <div class="gallery" id="galleryContainer"></div>
-
-        <button class="book-btn" id="bookNowBtn"><i class="fas fa-calendar-check"></i> Book Now</button>
+    
+    <div class="section">
+        <h3>📋 About Me</h3>
+        <p id="bio"></p>
+    </div>
+    
+    <div class="section">
+        <h3>🛠️ Skills</h3>
+        <div class="skills" id="skills"></div>
+    </div>
+    
+    <div class="section">
+        <h3>💰 Pricing</h3>
+        <div class="pricing" id="pricing"></div>
+    </div>
+    
+    <div class="section">
+        <h3>📸 Portfolio</h3>
+        <div class="portfolio-grid" id="portfolio"></div>
+    </div>
+    
+    <div class="section">
+        <h3>⭐ Reviews</h3>
+        <div id="reviews" class="reviews"></div>
+    </div>
+    
+    <div class="section">
+        <button class="contact-btn" id="contactBtn" onclick="contactWorker()">📩 Contact Worker</button>
     </div>
 </div>
 
 <script>
-    const worker = {
-        name: "Mike R.",
-        location: "United States",
-        languages: "English, Spanish",
-        rating: 4.8,
-        reviews: 103,
-        avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-        services: [
-            { name: "Furniture Moving", price: 40, icon: "fa-couch" },
-            { name: "Loading / Unloading", price: 45, icon: "fa-boxes" },
-            { name: "Truck & Van Rentals", price: 60, icon: "fa-truck" }
-        ],
-        badges: ["Licensed & Insured", "Background Checked", "Verified Professional", "Fast Response"],
-        gallery: [
-            "https://picsum.photos/id/10/200/150",
-            "https://picsum.photos/id/20/200/150",
-            "https://picsum.photos/id/26/200/150",
-            "https://picsum.photos/id/55/200/150",
-            "https://picsum.photos/id/96/200/150",
-            "https://picsum.photos/id/58/200/150"
-        ]
-    };
-
-    document.getElementById("workerName").innerText = worker.name;
-    document.getElementById("workerLocation").innerHTML = `<i class="fas fa-map-marker-alt"></i> ${worker.location} · Speaks ${worker.languages}`;
-    document.getElementById("ratingValue").innerText = `${worker.rating} (${worker.reviews} reviews)`;
-    document.getElementById("workerAvatar").style.backgroundImage = `url('${worker.avatar}')`;
-
-    document.getElementById("servicesList").innerHTML = worker.services.map(s => `
-        <div class="service-item">
-            <span class="service-name"><i class="fas ${s.icon}"></i> ${s.name}</span>
-            <span class="service-price">$${s.price}/hr</span>
-        </div>
-    `).join('');
-
-    document.getElementById("badgesContainer").innerHTML = worker.badges.map(b => `<div class="badge"><i class="fas fa-shield-alt"></i> ${b}</div>`).join('');
-    document.getElementById("galleryContainer").innerHTML = worker.gallery.map(img => `<img src="${img}" alt="work sample" onclick="alert('Full image view coming soon')">`).join('');
-
-    document.getElementById("bookNowBtn").addEventListener("click", () => alert("✅ Booking request sent to Mike R."));
-    document.getElementById("portfolioBtn").addEventListener("click", () => alert("📸 View completed work photos (full gallery coming soon)."));
-    document.getElementById("uploadBtn").addEventListener("click", () => alert("📤 Upload your work photos feature will be available soon."));
+    const workerId = new URLSearchParams(window.location.search).get('id');
+    let currentUser = null;
+    let workerData = null;
+    let showPhone = false;
+    
+    async function init() {
+        const { data: { user } } = await sb.auth.getUser();
+        currentUser = user;
+        
+        if (!workerId) {
+            document.body.innerHTML = '<div style="text-align:center; padding:50px;">No worker selected.</div>';
+            return;
+        }
+        
+        const { data: profile } = await sb.from('profiles').select('*').eq('id', workerId).single();
+        const { data: worker } = await sb.from('workers').select('*').eq('id', workerId).single();
+        
+        if (!profile || !worker) {
+            document.body.innerHTML = '<div style="text-align:center; padding:50px;">Worker not found.</div>';
+            return;
+        }
+        
+        workerData = { ...profile, ...worker };
+        
+        document.getElementById('workerName').innerText = profile.full_name || 'Worker';
+        document.getElementById('profession').innerText = worker.profession || 'Professional';
+        document.getElementById('bio').innerText = worker.bio || 'No bio provided yet.';
+        
+        const ratingValue = worker.rating_avg || 0;
+        const stars = '★'.repeat(Math.floor(ratingValue)) + '☆'.repeat(5 - Math.floor(ratingValue));
+        document.getElementById('rating').innerHTML = `${stars} (${ratingValue.toFixed(1)} from ${worker.rating_count || 0} reviews)`;
+        
+        const statusEl = document.getElementById('status');
+        statusEl.className = `status ${worker.is_available ? 'available' : 'busy'}`;
+        statusEl.innerHTML = worker.is_available ? '✅ Available Now' : '⏰ Currently Busy';
+        
+        if (profile.avatar_url) {
+            document.getElementById('avatar').innerHTML = `<img src="${profile.avatar_url}">`;
+        }
+        
+        const { data: skills } = await sb.from('worker_skills').select('skills(*)').eq('worker_id', workerId);
+        if (skills && skills.length > 0) {
+            document.getElementById('skills').innerHTML = skills.map(s => `<span class="skill-tag">${s.skills?.name}</span>`).join('');
+        } else {
+            document.getElementById('skills').innerHTML = '<span class="skill-tag">No skills listed</span>';
+        }
+        
+        document.getElementById('pricing').innerHTML = `
+            <div class="price-card"><strong>Hourly</strong><br>€${worker.hourly_rate || 'negotiable'}</div>
+            <div class="price-card"><strong>Daily</strong><br>€${worker.daily_rate || 'negotiable'}</div>
+        `;
+        
+        const { data: portfolio } = await sb.from('worker_portfolio').select('*').eq('worker_id', workerId);
+        if (portfolio && portfolio.length > 0) {
+            document.getElementById('portfolio').innerHTML = portfolio.map(p => `
+                <div class="portfolio-item">
+                    ${p.media_type === 'video' ? 
+                        `<video src="${p.media_url}" controls></video>` : 
+                        `<img src="${p.media_url}" onerror="this.src='https://via.placeholder.com/150'">`}
+                    <div style="padding:8px; font-size:0.8rem;">${p.title || 'Work'}</div>
+                </div>
+            `).join('');
+        } else {
+            document.getElementById('portfolio').innerHTML = '<p>No portfolio items yet.</p>';
+        }
+        
+        const { data: reviews } = await sb.from('worker_reviews').select('*, profiles!client_id(*)').eq('worker_id', workerId);
+        if (reviews && reviews.length > 0) {
+            document.getElementById('reviews').innerHTML = reviews.map(r => `
+                <div class="review">
+                    <strong>${r.profiles?.full_name || 'Client'}</strong>
+                    <span style="color:#f5b042;"> ${'★'.repeat(r.rating)}</span>
+                    <p>${r.comment || 'No comment.'}</p>
+                </div>
+            `).join('');
+        } else {
+            document.getElementById('reviews').innerHTML = '<p>No reviews yet.</p>';
+        }
+    }
+    
+    async function contactWorker() {
+        if (!currentUser) {
+            window.location.href = 'login.html';
+            return;
+        }
+        
+        const profile = await window.API.getProfile(currentUser.id);
+        if (profile.role !== 'client') {
+            alert('Only clients can contact workers. Please register as a client.');
+            return;
+        }
+        
+        let conversation = await window.API.getConversation(currentUser.id, workerId);
+        if (!conversation) {
+            const newConv = await window.API.createConversation(currentUser.id, workerId);
+            conversation = newConv[0];
+        }
+        window.location.href = `chat.html?conv=${conversation.id}`;
+    }
+    
+    init();
 </script>
-
 </body>
 </html>
