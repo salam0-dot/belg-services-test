@@ -4,443 +4,271 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Settings - BELG SERVICES</title>
-    <!-- Font Awesome -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="api.js"></script>
+    <script src="auth.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #fefcf5;
-            color: #1e2a2f;
-        }
-
-        /* Header Navigation */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            background: white;
-            border-bottom: 1px solid #f0e4d8;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .logo-img {
-            height: 45px;
-            width: auto;
-            object-fit: contain;
-        }
-        .logo-text {
-            font-size: 1.6rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #c49a6c, #8b5a2b);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .nav-links {
-            display: flex;
-            gap: 28px;
-            list-style: none;
-            align-items: center;
-        }
-        .nav-links a {
-            text-decoration: none;
-            font-weight: 500;
-            color: #2c3e2f;
-            transition: 0.2s;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #fefcf5; color: #1e2a2f; transition: 0.3s; }
+        body.dark-mode { background: #1a1a2e; color: #eee; }
+        body.dark-mode .navbar, body.dark-mode .settings-card, body.dark-mode .settings-card select, body.dark-mode .settings-card input { background: #2a2a3e; color: #eee; border-color: #444; }
+        body.dark-mode .settings-card input, body.dark-mode .settings-card select { background: #3a3a4e; }
+        
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: white; border-bottom: 1px solid #f0e4d8; flex-wrap: wrap; gap: 20px; }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-img { height: 45px; width: auto; }
+        .logo-text { font-size: 1.6rem; font-weight: 800; background: linear-gradient(135deg, #c49a6c, #8b5a2b); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; font-weight: 500; color: #2c3e2f; transition: 0.2s; }
+        body.dark-mode .nav-links a { color: #ddd; }
         .nav-links a:hover { color: #c49a6c; }
-
-        /* Settings Container */
-        .settings-container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 24px;
-        }
-
-        /* Settings Header */
-        .settings-header {
-            margin-bottom: 32px;
-        }
-        .settings-header h1 {
-            font-size: 2rem;
-            color: #1e2a2f;
-        }
-        .settings-header p {
-            color: #6e5e4a;
-            margin-top: 8px;
-        }
-
-        /* Settings Card */
-        .settings-card {
-            background: white;
-            border-radius: 32px;
-            padding: 28px;
-            margin-bottom: 28px;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
-            border: 1px solid #f0e4d8;
-        }
-        .card-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: #1e2a2f;
-            border-left: 4px solid #c49a6c;
-            padding-left: 14px;
-        }
-
-        /* Form Groups */
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 8px;
-            color: #2c3e2f;
-            font-size: 0.85rem;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1.5px solid #e2cfbc;
-            border-radius: 60px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            background: white;
-        }
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: #c49a6c;
-        }
-
-        /* Toggle Switch */
-        .toggle-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #f0e4d8;
-        }
-        .toggle-item:last-child {
-            border-bottom: none;
-        }
-        .toggle-label {
-            font-weight: 500;
-        }
-        .toggle-label small {
-            display: block;
-            font-size: 0.7rem;
-            color: #8b7a67;
-            font-weight: normal;
-        }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #e2cfbc;
-            transition: 0.3s;
-            border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: 0.3s;
-            border-radius: 50%;
-        }
-        input:checked + .slider {
-            background-color: #c49a6c;
-        }
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-
-        /* Danger Zone */
-        .danger-zone {
-            background: #fff5f5;
-            border-color: #ffe0e0;
-        }
-        .btn-danger {
-            background: transparent;
-            border: 2px solid #e6614f;
-            color: #e6614f;
-            padding: 10px 24px;
-            border-radius: 60px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-danger:hover {
-            background: #e6614f;
-            color: white;
-        }
-
-        /* Action Buttons */
-        .action-buttons {
-            display: flex;
-            gap: 16px;
-            justify-content: flex-end;
-            margin-top: 20px;
-        }
-        .btn-save {
-            background: #c49a6c;
-            color: white;
-            border: none;
-            padding: 12px 32px;
-            border-radius: 60px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-save:hover {
-            background: #a57c52;
-        }
-        .btn-cancel {
-            background: transparent;
-            border: 2px solid #e2cfbc;
-            color: #6e5e4a;
-            padding: 12px 32px;
-            border-radius: 60px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-cancel:hover {
-            border-color: #c49a6c;
-            color: #c49a6c;
-        }
-
-        /* Footer */
-        .footer {
-            background: #2c3e2f;
-            color: white;
-            text-align: center;
-            padding: 30px;
-            margin-top: 60px;
-        }
-
-        @media (max-width: 768px) {
-            .navbar { padding: 16px 20px; flex-direction: column; }
-            .nav-links { flex-wrap: wrap; justify-content: center; }
-            .settings-container { padding: 0 16px; }
-            .settings-card { padding: 20px; }
-        }
+        
+        .settings-container { max-width: 900px; margin: 40px auto; padding: 0 24px; }
+        .settings-header { margin-bottom: 32px; }
+        .settings-header h1 { font-size: 2rem; }
+        .settings-header p { color: #6e5e4a; margin-top: 8px; }
+        body.dark-mode .settings-header p { color: #aaa; }
+        
+        .settings-card { background: white; border-radius: 32px; padding: 28px; margin-bottom: 28px; box-shadow: 0 6px 14px rgba(0,0,0,0.05); border: 1px solid #f0e4d8; }
+        .card-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 24px; border-left: 4px solid #c49a6c; padding-left: 14px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.85rem; }
+        .form-group input, .form-group select { width: 100%; padding: 12px 16px; border: 1.5px solid #e2cfbc; border-radius: 60px; font-family: 'Inter', sans-serif; font-size: 0.9rem; background: white; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: #c49a6c; }
+        
+        .toggle-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0e4d8; }
+        .toggle-item:last-child { border-bottom: none; }
+        .toggle-label small { display: block; font-size: 0.7rem; color: #8b7a67; font-weight: normal; }
+        .switch { position: relative; display: inline-block; width: 50px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #e2cfbc; transition: 0.3s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%; }
+        input:checked + .slider { background-color: #c49a6c; }
+        input:checked + .slider:before { transform: translateX(26px); }
+        
+        .danger-zone { background: #fff5f5; border-color: #ffe0e0; }
+        body.dark-mode .danger-zone { background: #3a2a2a; border-color: #c44; }
+        .btn-danger { background: transparent; border: 2px solid #e6614f; color: #e6614f; padding: 10px 24px; border-radius: 60px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .btn-danger:hover { background: #e6614f; color: white; }
+        
+        .action-buttons { display: flex; gap: 16px; justify-content: flex-end; margin-top: 20px; }
+        .btn-save { background: #c49a6c; color: white; border: none; padding: 12px 32px; border-radius: 60px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .btn-save:hover { background: #a57c52; }
+        .btn-cancel { background: transparent; border: 2px solid #e2cfbc; color: #6e5e4a; padding: 12px 32px; border-radius: 60px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .btn-cancel:hover { border-color: #c49a6c; color: #c49a6c; }
+        
+        .message { padding: 12px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
+        .error { background: #ffe0e0; color: #c44; }
+        .success { background: #d4f5d0; color: #2e6b1f; }
+        
+        .footer { background: #2c3e2f; color: white; text-align: center; padding: 30px; margin-top: 60px; }
+        body.dark-mode .footer { background: #111; }
+        
+        @media (max-width: 768px) { .navbar { padding: 16px 20px; flex-direction: column; } .nav-links { flex-wrap: wrap; justify-content: center; } }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <div class="navbar">
-        <div class="logo-area">
-            <img src="logo.png" alt="BELG SERVICES" class="logo-img" onerror="this.src='https://placehold.co/50x50?text=BS'">
-            <span class="logo-text">BELG SERVICES</span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
+<div class="navbar">
+    <div class="logo-area">
+        <img src="logo.png" alt="logo" class="logo-img" onerror="this.src='https://placehold.co/50x50?text=BS'">
+        <span class="logo-text">BELG SERVICES</span>
+    </div>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</div>
+
+<div class="settings-container">
+    <div class="settings-header">
+        <h1>Settings</h1>
+        <p>Manage your account preferences and privacy</p>
     </div>
 
-    <!-- Settings Content -->
-    <div class="settings-container">
-        <div class="settings-header">
-            <h1>Settings</h1>
-            <p>Manage your account preferences and privacy</p>
-        </div>
+    <div id="settingsMessage"></div>
 
-        <!-- Profile Settings -->
-        <div class="settings-card">
-            <h2 class="card-title"><i class="fas fa-user-circle"></i> Profile Settings</h2>
-            <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" placeholder="John Smith" value="John Smith">
-            </div>
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" placeholder="hello@belgservices.com" value="hello@belgservices.com">
-            </div>
-            <div class="form-group">
-                <label>Phone Number</label>
-                <input type="tel" placeholder="+32 123 456 789" value="+32 123 456 789">
-            </div>
+    <!-- Profile Settings -->
+    <div class="settings-card">
+        <h2 class="card-title"><i class="fas fa-user-circle"></i> Profile Settings</h2>
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="fullName" placeholder="Your full name">
         </div>
-
-        <!-- Account Settings -->
-        <div class="settings-card">
-            <h2 class="card-title"><i class="fas fa-lock"></i> Account Settings</h2>
-            <div class="form-group">
-                <label>New Password</label>
-                <input type="password" placeholder="Enter new password">
-            </div>
-            <div class="form-group">
-                <label>Confirm Password</label>
-                <input type="password" placeholder="Confirm new password">
-            </div>
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="email" placeholder="Email address" readonly style="background:#f0e4d8;">
         </div>
-
-        <!-- Notification Settings -->
-        <div class="settings-card">
-            <h2 class="card-title"><i class="fas fa-bell"></i> Notifications</h2>
-            <div class="toggle-item">
-                <div class="toggle-label">
-                    Email Notifications
-                    <small>Receive updates via email</small>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div class="toggle-item">
-                <div class="toggle-label">
-                    Push Notifications
-                    <small>Get alerts on your device</small>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div class="toggle-item">
-                <div class="toggle-label">
-                    Message Alerts
-                    <small>Notifications for new messages</small>
-                </div>
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider"></span>
-                </label>
-            </div>
-        </div>
-
-        <!-- Privacy Settings -->
-        <div class="settings-card">
-            <h2 class="card-title"><i class="fas fa-shield-alt"></i> Privacy</h2>
-            <div class="toggle-item">
-                <div class="toggle-label">
-                    Show Email
-                    <small>Display email on your profile</small>
-                </div>
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div class="toggle-item">
-                <div class="toggle-label">
-                    Show Phone Number
-                    <small>Display phone on your profile</small>
-                </div>
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider"></span>
-                </label>
-            </div>
-        </div>
-
-        <!-- Language Settings -->
-        <div class="settings-card">
-            <h2 class="card-title"><i class="fas fa-language"></i> Language</h2>
-            <div class="form-group">
-                <label>Select Language</label>
-                <select>
-                    <option>English</option>
-                    <option>Français</option>
-                    <option>Nederlands</option>
-                    <option>Español</option>
-                    <option>العربية</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- Appearance -->
-        <div class="settings-card">
-            <h2 class="card-title"><i class="fas fa-palette"></i> Appearance</h2>
-            <div class="toggle-item">
-                <div class="toggle-label">
-                    Dark Mode
-                    <small>Switch between light and dark theme</small>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" id="darkModeToggle">
-                    <span class="slider"></span>
-                </label>
-            </div>
-        </div>
-
-        <!-- Danger Zone -->
-        <div class="settings-card danger-zone">
-            <h2 class="card-title"><i class="fas fa-exclamation-triangle"></i> Danger Zone</h2>
-            <div class="toggle-item">
-                <div class="toggle-label">
-                    Delete Account
-                    <small>Permanently delete your account and all data</small>
-                </div>
-                <button class="btn-danger" onclick="alert('Are you sure? This action cannot be undone.')">Delete Account</button>
-            </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="action-buttons">
-            <button class="btn-cancel" onclick="window.location.href='dashboard.html'">Cancel</button>
-            <button class="btn-save" onclick="alert('Settings saved successfully!')">Save Changes</button>
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="phone" placeholder="+32 123 456 789">
         </div>
     </div>
 
-    <!-- Footer -->
-    <div class="footer">
-        <p>© 2025 BELG SERVICES — Account Settings</p>
+    <!-- Language Settings -->
+    <div class="settings-card">
+        <h2 class="card-title"><i class="fas fa-language"></i> Language</h2>
+        <div class="form-group">
+            <label>Select Language</label>
+            <select id="languageSelect">
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+                <option value="nl">Nederlands</option>
+                <option value="es">Español</option>
+                <option value="ar">العربية</option>
+            </select>
+        </div>
     </div>
 
-    <script>
-        // Dark mode toggle functionality (just for demo)
+    <!-- Notification Settings -->
+    <div class="settings-card">
+        <h2 class="card-title"><i class="fas fa-bell"></i> Notifications</h2>
+        <div class="toggle-item">
+            <div class="toggle-label">Email Notifications<small>Receive updates via email</small></div>
+            <label class="switch"><input type="checkbox" id="emailNotifications"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-item">
+            <div class="toggle-label">SMS Notifications<small>Get alerts on your phone</small></div>
+            <label class="switch"><input type="checkbox" id="smsNotifications"><span class="slider"></span></label>
+        </div>
+    </div>
+
+    <!-- Privacy Settings -->
+    <div class="settings-card">
+        <h2 class="card-title"><i class="fas fa-shield-alt"></i> Privacy</h2>
+        <div class="toggle-item">
+            <div class="toggle-label">Show Phone Number<small>Display phone on your profile</small></div>
+            <label class="switch"><input type="checkbox" id="showPhone"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-item">
+            <div class="toggle-label">Show Email<small>Display email on your profile</small></div>
+            <label class="switch"><input type="checkbox" id="showEmail"><span class="slider"></span></label>
+        </div>
+    </div>
+
+    <!-- Appearance -->
+    <div class="settings-card">
+        <h2 class="card-title"><i class="fas fa-palette"></i> Appearance</h2>
+        <div class="toggle-item">
+            <div class="toggle-label">Dark Mode<small>Switch between light and dark theme</small></div>
+            <label class="switch"><input type="checkbox" id="darkModeToggle"><span class="slider"></span></label>
+        </div>
+    </div>
+
+    <!-- Danger Zone -->
+    <div class="settings-card danger-zone">
+        <h2 class="card-title"><i class="fas fa-exclamation-triangle"></i> Danger Zone</h2>
+        <div class="toggle-item">
+            <div class="toggle-label">Delete Account<small>Permanently delete your account and all data</small></div>
+            <button class="btn-danger" id="deleteAccountBtn">Delete Account</button>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button class="btn-cancel" onclick="window.location.href='dashboard.html'">Cancel</button>
+        <button class="btn-save" id="saveSettingsBtn">Save Changes</button>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2025 BELG SERVICES — Account Settings</p>
+</div>
+
+<script>
+    let currentUser = null;
+    let currentSettings = null;
+
+    async function init() {
+        const { data: { user } } = await sb.auth.getUser();
+        if (!user) { window.location.href = 'login.html'; return; }
+        currentUser = user;
+        
+        const profile = await window.API.getProfile(user.id);
+        document.getElementById('fullName').value = profile.full_name || '';
+        document.getElementById('email').value = profile.email || '';
+        document.getElementById('phone').value = profile.phone || '';
+        
+        const settings = await window.API.getUserSettings(user.id);
+        if (settings) {
+            currentSettings = settings;
+            document.getElementById('languageSelect').value = settings.language || 'en';
+            document.getElementById('emailNotifications').checked = settings.email_notifications || false;
+            document.getElementById('smsNotifications').checked = settings.sms_notifications || false;
+            document.getElementById('showPhone').checked = settings.show_phone || false;
+            document.getElementById('showEmail').checked = settings.show_email || false;
+            
+            if (settings.privacy_mode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('darkModeToggle').checked = true;
+            }
+        } else {
+            await window.API.createUserSettings(user.id);
+            document.getElementById('languageSelect').value = 'en';
+        }
+        
         const darkModeToggle = document.getElementById('darkModeToggle');
         darkModeToggle.addEventListener('change', function() {
-            if(this.checked) {
-                document.body.style.background = '#1a1a2e';
-                document.body.style.color = '#eeeeee';
-                alert('Dark mode enabled (demo preview)');
-            } else {
-                document.body.style.background = '#fefcf5';
-                document.body.style.color = '#1e2a2f';
-                alert('Light mode enabled (demo preview)');
-            }
+            if(this.checked) { document.body.classList.add('dark-mode'); }
+            else { document.body.classList.remove('dark-mode'); }
         });
-    </script>
+    }
+    
+    document.getElementById('saveSettingsBtn').addEventListener('click', async function() {
+        const msgDiv = document.getElementById('settingsMessage');
+        msgDiv.innerHTML = '<div class="message" style="background:#f0e4d8;">Saving settings...</div>';
+        
+        try {
+            await window.API.updateProfile(currentUser.id, {
+                full_name: document.getElementById('fullName').value,
+                phone: document.getElementById('phone').value
+            });
+            
+            await window.API.updateUserSettings(currentUser.id, {
+                language: document.getElementById('languageSelect').value,
+                email_notifications: document.getElementById('emailNotifications').checked,
+                sms_notifications: document.getElementById('smsNotifications').checked,
+                show_phone: document.getElementById('showPhone').checked,
+                show_email: document.getElementById('showEmail').checked,
+                privacy_mode: document.getElementById('darkModeToggle').checked
+            });
+            
+            const selectedLang = document.getElementById('languageSelect').value;
+            localStorage.setItem('app_language', selectedLang);
+            
+            msgDiv.innerHTML = '<div class="message success">✅ Settings saved successfully!</div>';
+            setTimeout(() => { msgDiv.innerHTML = ''; }, 3000);
+            
+        } catch (error) {
+            msgDiv.innerHTML = '<div class="message error">❌ Error saving settings: ' + error.message + '</div>';
+        }
+    });
+    
+    document.getElementById('deleteAccountBtn').addEventListener('click', async function() {
+        if (confirm('⚠️ Are you sure? This action cannot be undone. All your data will be permanently deleted.')) {
+            if (confirm('Type "DELETE" to confirm:')) {
+                const input = prompt('Please type "DELETE" to confirm account deletion');
+                if (input === 'DELETE') {
+                    try {
+                        await window.API.deleteProfile(currentUser.id);
+                        await window.Auth.signOut();
+                        alert('Account deleted successfully.');
+                        window.location.href = 'index.html';
+                    } catch (error) {
+                        alert('Error deleting account: ' + error.message);
+                    }
+                } else { alert('Deletion cancelled.'); }
+            }
+        }
+    });
+    
+    init();
+</script>
 </body>
-              </html>
+</html>
