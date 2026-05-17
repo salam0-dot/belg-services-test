@@ -30,13 +30,9 @@
         .search-section { padding: 30px 40px; background: #ffffff; border-bottom: 1px solid #ffe0cc; }
         .search-box { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
         .search-input { flex: 2; padding: 14px 20px; border: 1px solid #ffccaa; border-radius: 60px; font-size: 1rem; }
-        .filter-buttons { display: flex; flex-wrap: wrap; gap: 12px; }
-        .filter-btn { background: #fff0e6; border: none; padding: 8px 24px; border-radius: 40px; font-weight: 600; cursor: pointer; transition: 0.2s; color: #5a3e2a; }
-        .filter-btn.active, .filter-btn:hover { background: #FF6600; color: white; }
         .companies-section { padding: 30px 40px; }
         .section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 25px; flex-wrap: wrap; }
         .section-header h2 { font-size: 1.8rem; font-weight: 700; color: #2c3e2f; }
-        .see-all { color: #FF6600; text-decoration: none; font-weight: 600; }
         .companies-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
         .company-card { background: white; border-radius: 28px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.05); border: 1px solid #ffe0cc; transition: 0.2s; cursor: pointer; }
         .company-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(255,102,0,0.1); }
@@ -53,6 +49,7 @@
         .project-img { height: 160px; background-size: cover; background-position: center; }
         .project-info { padding: 15px; }
         .join-cta { background: linear-gradient(135deg, #FF6600, #FF8C00); margin: 20px 40px 40px; padding: 40px; border-radius: 40px; text-align: center; color: white; }
+        .join-cta button { background: white; color: #FF6600; border: none; padding: 12px 30px; border-radius: 40px; font-weight: bold; margin-top: 15px; cursor: pointer; }
         .footer { background: #2c3e2f; color: white; padding: 40px; text-align: center; }
         @media (max-width: 768px) { .navbar { padding: 20px; } .hero-stats { padding: 30px 20px; } }
     </style>
@@ -76,8 +73,8 @@
     <div class="hero-stats">
         <div class="stats-grid">
             <div class="stat-card"><div class="stat-number" id="countCompanies">0</div><div class="stat-label">Partner Companies</div></div>
-            <div class="stat-card"><div class="stat-number">1,250+</div><div class="stat-label">Projects Completed</div></div>
-            <div class="stat-card"><div class="stat-number">98%</div><div class="stat-label">Satisfaction Rate</div></div>
+            <div class="stat-card"><div class="stat-number" id="totalProjects">0</div><div class="stat-label">Projects Completed</div></div>
+            <div class="stat-card"><div class="stat-number" id="avgRating">0</div><div class="stat-label">Satisfaction Rate</div></div>
         </div>
     </div>
 
@@ -92,7 +89,7 @@
             <h2>Featured Companies</h2>
         </div>
         <div class="companies-grid" id="companiesContainer">
-            </div>
+        </div>
     </div>
 
     <div class="portfolio-section">
@@ -100,7 +97,7 @@
             <h2>📸 Recent Success Projects</h2>
         </div>
         <div class="portfolio-grid" id="portfolioContainer">
-            </div>
+        </div>
     </div>
 
     <div class="join-cta">
@@ -115,47 +112,92 @@
     const sb = supabase.createClient(window.env.URL, window.env.KEY);
 
     async function loadData() {
-        // 1. جلب الشركات من جدول profiles
-        const { data: companies, error: err1 } = await sb.from('profiles').select('*').eq('role', 'company');
+        const { data: profiles, error } = await sb.from('profiles').select('*').eq('role', 'company');
         
-        if (companies) {
-            document.getElementById('countCompanies').innerText = companies.length + "+";
-            const container = document.getElementById('companiesContainer');
-            container.innerHTML = companies.map(c => `
-                <div class="company-card" onclick="window.location.href='worker-profile.html?id=${c.id}'">
-                    <div class="company-banner" style="background-image: url('${c.avatar_url || 'https://via.placeholder.com/400x150'}')"></div>
-                    <div class="company-logo" style="background-image: url('${c.avatar_url || 'https://via.placeholder.com/100'}')"></div>
-                    <div class="company-info">
-                        <div class="company-name">${c.full_name}</div>
-                        <div class="company-category">Professional Service</div>
-                        <div class="rating">★★★★★ ${c.rating || 5.0}</div>
-                        <button class="view-profile-btn">View Profile →</button>
-                    </div>
-                </div>
-            `).join('');
+        if (error) {
+            console.error('Error loading companies:', error);
+            return;
         }
-
-        // 2. جلب آخر الصور المرفوعة من جدول work_gallery كـ "مشاريع نجاح"
-        const { data: gallery, error: err2 } = await sb.from('work_gallery').select('*').limit(4);
-        if (gallery) {
-            const portContainer = document.getElementById('portfolioContainer');
-            portContainer.innerHTML = gallery.map(p => `
-                <div class="project-card">
-                    <div class="project-img" style="background-image: url('${p.image_url}')"></div>
-                    <div class="project-info">
-                        <div class="project-title">${p.title || 'Success Project'}</div>
+        
+        if (profiles && profiles.length > 0) {
+            document.getElementById('countCompanies').innerText = profiles.length;
+            
+            const companiesData = [];
+            for (const profile of profiles) {
+                const { data: companyInfo } = await sb.from('companies').select('rating_avg').eq('id', profile.id).single();
+                companiesData.push({
+                    ...profile,
+                    rating_avg: companyInfo?.rating_avg || 4.5
+                });
+            }
+            
+            const totalRating = companiesData.reduce((sum, c) => sum + (c.rating_avg || 0), 0);
+            const avgRating = (totalRating / companiesData.length).toFixed(1);
+            document.getElementById('avgRating').innerHTML = avgRating + '%';
+            
+            const container = document.getElementById('companiesContainer');
+            container.innerHTML = companiesData.map(c => {
+                const ratingValue = c.rating_avg || 4.5;
+                const stars = '★'.repeat(Math.floor(ratingValue)) + '☆'.repeat(5 - Math.floor(ratingValue));
+                return `
+                    <div class="company-card" onclick="window.location.href='company-profile.html?id=${c.id}'">
+                        <div class="company-banner" style="background-image: url('${c.avatar_url || 'https://via.placeholder.com/400x150?text=Cover'}')"></div>
+                        <div class="company-logo" style="background-image: url('${c.avatar_url || 'https://via.placeholder.com/100?text=Logo'}')"></div>
+                        <div class="company-info">
+                            <div class="company-name">${c.full_name || 'Company Name'}</div>
+                            <div class="company-category">Professional Service</div>
+                            <div class="rating">${stars} ${ratingValue}</div>
+                            <button class="view-profile-btn">View Profile →</button>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
+        }
+        
+        const { data: projectMedia, error: mediaError } = await sb
+            .from('project_media')
+            .select('*, company_projects(*)')
+            .limit(4);
+        
+        if (projectMedia && projectMedia.length > 0) {
+            document.getElementById('totalProjects').innerText = projectMedia.length * 10;
+            const portContainer = document.getElementById('portfolioContainer');
+            portContainer.innerHTML = projectMedia.map(p => {
+                const projectTitle = p.company_projects?.title || 'Success Project';
+                return `
+                    <div class="project-card">
+                        <div class="project-img" style="background-image: url('${p.media_url}')"></div>
+                        <div class="project-info">
+                            <div class="project-title" style="font-weight: 600;">${projectTitle}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        } else {
+            const { data: workerPortfolio } = await sb.from('worker_portfolio').select('*').limit(4);
+            if (workerPortfolio && workerPortfolio.length > 0) {
+                document.getElementById('totalProjects').innerText = workerPortfolio.length * 5;
+                const portContainer = document.getElementById('portfolioContainer');
+                portContainer.innerHTML = workerPortfolio.map(p => `
+                    <div class="project-card">
+                        <div class="project-img" style="background-image: url('${p.media_url}')"></div>
+                        <div class="project-info">
+                            <div class="project-title" style="font-weight: 600;">${p.title || 'Work Sample'}</div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('totalProjects').innerText = '0';
+                document.getElementById('portfolioContainer').innerHTML = '<p style="text-align:center; color:#999;">No projects yet.</p>';
+            }
         }
     }
 
-    // البحث البسيط
     document.getElementById('searchInput').addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase();
         const cards = document.querySelectorAll('.company-card');
         cards.forEach(card => {
-            const name = card.querySelector('.company-name').innerText.toLowerCase();
+            const name = card.querySelector('.company-name')?.innerText.toLowerCase() || '';
             card.style.display = name.includes(term) ? 'block' : 'none';
         });
     });
