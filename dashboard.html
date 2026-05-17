@@ -103,9 +103,28 @@
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
             <input type="text" id="imgUrl" placeholder="Paste Image URL here..." style="flex: 2;">
             <input type="text" id="imgTitle" placeholder="Project Name" style="flex: 1;">
+            <select id="mediaType" style="flex: 1; padding: 12px; border-radius: 15px; border: 1.5px solid #eee;">
+                <option value="image">Image</option>
+                <option value="video">Video</option>
+            </select>
         </div>
         <button class="btn-save" onclick="uploadPhoto()"><i class="fas fa-plus"></i> Add to Portfolio</button>
         <div id="galleryGrid" class="grid"></div>
+    </div>
+
+    <div id="companyProjectsSection" class="card hidden">
+        <h2><i class="fas fa-building"></i> Company Projects</h2>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <input type="text" id="projectTitle" placeholder="Project Title" style="flex: 2;">
+            <textarea id="projectDesc" placeholder="Project Description" rows="2" style="width: 100%;"></textarea>
+            <select id="projectStatus" style="padding: 12px; border-radius: 15px; border: 1.5px solid #eee;">
+                <option value="completed">Completed</option>
+                <option value="in_progress">In Progress</option>
+                <option value="planned">Planned</option>
+            </select>
+        </div>
+        <button class="btn-save" onclick="addCompanyProject()"><i class="fas fa-plus"></i> Add Project</button>
+        <div id="projectsGrid" class="grid"></div>
     </div>
 
     <div id="socialSection" class="card hidden">
@@ -126,6 +145,9 @@
         <label style="font-size: 0.8rem; font-weight: 700; margin-left: 5px;">BIO / ABOUT</label>
         <textarea id="bioText" rows="4" placeholder="Tell clients about your expertise..."></textarea>
         
+        <label style="font-size: 0.8rem; font-weight: 700; margin-left: 5px;">HOURLY RATE (for workers)</label>
+        <input type="number" id="hourlyRate" placeholder="Hourly rate in USD">
+        
         <button class="btn-save" onclick="saveProfile()">Save Profile</button>
     </div>
 </div>
@@ -133,15 +155,30 @@
 <script>
     const sb = supabase.createClient(window.env.URL, window.env.KEY);
     let currentUser = null;
+    let currentUserRole = null;
 
-    async function loadProfile() {
+    async function loadProfileData() {
         const profile = await window.API.getProfile(currentUser.id);
         if (profile) {
             document.getElementById('dispName').value = profile.full_name || '';
             document.getElementById('bioText').value = profile.bio || '';
-            document.getElementById('instaLink').value = profile.instagram_url || '';
-            document.getElementById('fbLink').value = profile.facebook_url || '';
-            document.getElementById('waNumber').value = profile.whatsapp_number || '';
+        }
+        
+        if (currentUserRole === 'worker') {
+            const worker = await window.API.getWorker(currentUser.id);
+            if (worker) {
+                document.getElementById('hourlyRate').value = worker.hourly_rate || '';
+                document.getElementById('instaLink').value = worker.instagram || '';
+                document.getElementById('fbLink').value = worker.facebook || '';
+                document.getElementById('waNumber').value = worker.whatsapp || '';
+            }
+        } else if (currentUserRole === 'company') {
+            const company = await window.API.getCompany(currentUser.id);
+            if (company) {
+                document.getElementById('instaLink').value = company.instagram || '';
+                document.getElementById('fbLink').value = company.facebook || '';
+                document.getElementById('waNumber').value = company.whatsapp || '';
+            }
         }
     }
 
@@ -151,16 +188,21 @@
         currentUser = user;
 
         const profile = await window.API.getProfile(user.id);
+        currentUserRole = profile.role;
         
         document.getElementById('welcomeMsg').innerText = `Welcome, ${profile.full_name || 'User'}`;
         document.getElementById('userRoleBadge').innerText = profile.role || 'User';
         
-        await loadProfile();
+        await loadProfileData();
 
-        if (profile.role === 'worker' || profile.role === 'company') {
-            document.getElementById('socialSection').classList.remove('hidden');
+        document.getElementById('socialSection').classList.remove('hidden');
+
+        if (profile.role === 'worker') {
             document.getElementById('gallerySection').classList.remove('hidden');
-            loadGallery();
+            loadWorkerPortfolio();
+        } else if (profile.role === 'company') {
+            document.getElementById('companyProjectsSection').classList.remove('hidden');
+            loadCompanyProjects();
         }
     }
 
@@ -170,25 +212,40 @@
             bio: document.getElementById('bioText').value,
             updated_at: new Date()
         };
-        const success = await window.API.updateProfile(currentUser.id, updates);
-        if(success) {
+        
+        const profileSuccess = await window.API.updateProfile(currentUser.id, updates);
+        
+        let roleSuccess = true;
+        if (currentUserRole === 'worker') {
+            roleSuccess = await window.API.updateWorker(currentUser.id, {
+                hourly_rate: document.getElementById('hourlyRate').value
+            });
+        }
+        
+        if (profileSuccess && roleSuccess) {
             alert('✅ Profile Updated Successfully');
-            await loadProfile();
+            await loadProfileData();
         } else {
             alert('❌ Failed to update profile');
         }
     }
 
     async function saveSocial() {
-        const updates = {
-            instagram_url: document.getElementById('instaLink').value,
-            facebook_url: document.getElementById('fbLink').value,
-            whatsapp_number: document.getElementById('waNumber').value
+        let success = false;
+        const socialData = {
+            instagram: document.getElementById('instaLink').value,
+            facebook: document.getElementById('fbLink').value,
+            whatsapp: document.getElementById('waNumber').value
         };
-        const success = await window.API.updateProfile(currentUser.id, updates);
-        if(success) {
+        
+        if (currentUserRole === 'worker') {
+            success = await window.API.updateWorker(currentUser.id, socialData);
+        } else if (currentUserRole === 'company') {
+            success = await window.API.updateCompany(currentUser.id, socialData);
+        }
+        
+        if (success) {
             alert('🔗 Social Links Updated Successfully');
-            await loadProfile();
         } else {
             alert('❌ Failed to update social links');
         }
@@ -197,29 +254,67 @@
     async function uploadPhoto() {
         const url = document.getElementById('imgUrl').value;
         const title = document.getElementById('imgTitle').value;
+        const mediaType = document.getElementById('mediaType').value;
+        
         if (!url) { alert('Please enter image URL'); return; }
-        await window.API.uploadWork(currentUser.id, url, title);
+        
+        await window.API.addWorkerPortfolio(currentUser.id, title, url, mediaType);
         document.getElementById('imgUrl').value = '';
         document.getElementById('imgTitle').value = '';
-        loadGallery();
+        loadWorkerPortfolio();
     }
 
-    async function loadGallery() {
-        const photos = await window.API.getGallery(currentUser.id);
+    async function loadWorkerPortfolio() {
+        const items = await window.API.getWorkerPortfolio(currentUser.id);
         const grid = document.getElementById('galleryGrid');
-        if (photos && photos.length > 0) {
-            grid.innerHTML = photos.map(p => `
+        if (items && items.length > 0) {
+            grid.innerHTML = items.map(item => `
                 <div class="gallery-item">
-                    <img src="${p.image_url}" onerror="this.src='https://via.placeholder.com/300x200?text=Invalid+Image+URL'">
-                    <p>${p.title || 'Project'}</p>
+                    ${item.media_type === 'video' ? 
+                        `<video src="${item.media_url}" controls style="width:100%; height:160px; object-fit:cover;"></video>` :
+                        `<img src="${item.media_url}" onerror="this.src='https://via.placeholder.com/300x200?text=Invalid+URL'">`
+                    }
+                    <p>${item.title || 'Project'}</p>
                 </div>
             `).join('');
         } else {
-            grid.innerHTML = '<p style="text-align:center; color:#999;">No photos yet. Add your first project above.</p>';
+            grid.innerHTML = '<p style="text-align:center; color:#999;">No portfolio items yet. Add your first project above.</p>';
+        }
+    }
+
+    async function addCompanyProject() {
+        const title = document.getElementById('projectTitle').value;
+        const description = document.getElementById('projectDesc').value;
+        const status = document.getElementById('projectStatus').value;
+        
+        if (!title) { alert('Please enter project title'); return; }
+        
+        await window.API.addCompanyProject(currentUser.id, title, description, status, null);
+        document.getElementById('projectTitle').value = '';
+        document.getElementById('projectDesc').value = '';
+        loadCompanyProjects();
+    }
+
+    async function loadCompanyProjects() {
+        const projects = await window.API.getCompanyProjects(currentUser.id);
+        const grid = document.getElementById('projectsGrid');
+        if (projects && projects.length > 0) {
+            grid.innerHTML = projects.map(project => `
+                <div class="gallery-item">
+                    <div style="padding: 15px;">
+                        <h3 style="color: #c49a6c;">${project.title}</h3>
+                        <p style="font-size: 0.8rem; margin: 8px 0;">${project.description || ''}</p>
+                        <span style="background: #f0e6db; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem;">${project.status}</span>
+                        <p style="font-size: 0.7rem; margin-top: 8px;">${project.completion_date || new Date(project.created_at).toLocaleDateString()}</p>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            grid.innerHTML = '<p style="text-align:center; color:#999;">No projects yet. Add your first project above.</p>';
         }
     }
 
     init();
 </script>
 </body>
-</html>
+    </html>
