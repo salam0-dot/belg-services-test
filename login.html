@@ -12,39 +12,22 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #fefcf5 0%, #f9f3e9 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
-        .login-container { max-width: 480px; width: 100%; background: white; border-radius: 48px; box-shadow: 0 25px 45px -12px rgba(0,0,0,0.15); overflow: hidden; transition: all 0.3s; }
+        .login-container { max-width: 480px; width: 100%; background: white; border-radius: 48px; box-shadow: 0 25px 45px -12px rgba(0,0,0,0.15); overflow: hidden; }
         .login-header { background: linear-gradient(135deg, #c49a6c, #a57c52); padding: 32px 28px; text-align: center; color: white; }
         .login-header i { font-size: 3rem; margin-bottom: 12px; }
-        .login-header h1 { font-size: 1.9rem; font-weight: 700; letter-spacing: -0.5px; }
+        .login-header h1 { font-size: 1.9rem; font-weight: 700; }
         .login-header p { font-size: 0.9rem; opacity: 0.85; margin-top: 8px; }
         .login-body { padding: 36px 32px; }
-        .social-login { display: flex; gap: 16px; margin-bottom: 28px; }
-        .social-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 60px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.2s; text-decoration: none; border: 1px solid #e2cfbc; background: white; color: #1e2a2f; }
-        .social-btn i { font-size: 1.2rem; }
-        .social-btn.facebook-btn i { color: #1877f2; }
-        .social-btn.google-btn i { color: #db4437; }
-        .social-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.08); }
-        .divider { text-align: center; margin: 24px 0; position: relative; }
-        .divider::before { content: ""; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #e2cfbc; }
-        .divider span { background: white; padding: 0 16px; position: relative; color: #8b7a67; font-size: 0.8rem; }
-        .user-type-selector { display: flex; gap: 12px; margin-bottom: 28px; background: #f5f0ea; padding: 6px; border-radius: 60px; }
-        .user-type-btn { flex: 1; text-align: center; padding: 10px 0; border: none; background: transparent; font-weight: 600; font-size: 0.85rem; border-radius: 50px; cursor: pointer; transition: 0.2s; color: #5a4a3a; }
-        .user-type-btn.active { background: #c49a6c; color: white; box-shadow: 0 4px 10px rgba(196,154,108,0.2); }
         .input-group { margin-bottom: 22px; }
         .input-group label { display: block; font-weight: 500; margin-bottom: 8px; color: #2c3e2f; font-size: 0.85rem; }
-        .input-group input { width: 100%; padding: 14px 18px; border: 1.5px solid #e2cfbc; border-radius: 60px; font-family: 'Inter', sans-serif; font-size: 0.95rem; transition: 0.2s; background: white; }
+        .input-group input { width: 100%; padding: 14px 18px; border: 1.5px solid #e2cfbc; border-radius: 60px; font-family: 'Inter', sans-serif; font-size: 0.95rem; background: white; }
         .input-group input:focus { outline: none; border-color: #c49a6c; box-shadow: 0 0 0 3px rgba(196,154,108,0.1); }
-        .login-options { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 28px; font-size: 0.85rem; }
-        .checkbox-label { display: flex; align-items: center; gap: 8px; color: #5a6e4a; cursor: pointer; }
-        .forgot-link { color: #c49a6c; text-decoration: none; font-weight: 500; transition: 0.2s; }
-        .forgot-link:hover { text-decoration: underline; }
         .login-btn { width: 100%; background: #c49a6c; color: white; border: none; padding: 14px; font-size: 1rem; font-weight: 700; border-radius: 60px; cursor: pointer; transition: 0.2s; margin-bottom: 20px; }
-        .login-btn:hover { background: #a57c52; transform: translateY(-2px); }
+        .login-btn:hover { background: #a57c52; }
         .register-link { text-align: center; font-size: 0.85rem; color: #5a6e4a; }
         .register-link a { color: #c49a6c; text-decoration: none; font-weight: 600; }
         .back-home { display: block; text-align: center; margin-top: 24px; text-decoration: none; color: #8b7a67; font-size: 0.8rem; }
-        .back-home i { margin-right: 6px; }
-        @media (max-width: 520px) { .login-body { padding: 28px 20px; } .social-login { flex-direction: column; } .user-type-selector { flex-wrap: wrap; } }
+        .error-msg { color: red; text-align: center; margin-bottom: 15px; font-size: 0.85rem; }
     </style>
 </head>
 <body>
@@ -56,22 +39,7 @@
         </div>
 
         <div class="login-body">
-            <div class="user-type-selector">
-                <button class="user-type-btn active" data-type="client">👤 Client</button>
-                <button class="user-type-btn" data-type="worker">🔧 Worker</button>
-                <button class="user-type-btn" data-type="company">🏢 Company</button>
-            </div>
-
-            <div class="social-login">
-                <button class="social-btn facebook-btn" onclick="alert('Facebook login coming soon')">
-                    <i class="fab fa-facebook-f"></i> Facebook
-                </button>
-                <button class="social-btn google-btn" onclick="alert('Google login coming soon')">
-                    <i class="fab fa-google"></i> Google
-                </button>
-            </div>
-
-            <div class="divider"><span>or login with email</span></div>
+            <div id="errorMsg" class="error-msg"></div>
 
             <form id="loginForm">
                 <div class="input-group">
@@ -84,11 +52,6 @@
                     <input type="password" id="password" placeholder="••••••••" required>
                 </div>
 
-                <div class="login-options">
-                    <label class="checkbox-label"><input type="checkbox"> Remember me</label>
-                    <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
-                </div>
-
                 <button type="submit" class="login-btn">Sign In →</button>
 
                 <div class="register-link">Don't have an account? <a href="register.html">Join now</a></div>
@@ -98,18 +61,13 @@
     </div>
 
     <script>
-        const btns = document.querySelectorAll('.user-type-btn');
-        btns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                btns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            });
-        });
-
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMsg');
+            
+            errorDiv.innerHTML = '';
             
             try {
                 const data = await window.Auth.signIn(email, password);
@@ -117,7 +75,7 @@
                     window.location.href = "dashboard.html";
                 }
             } catch (error) {
-                alert("Login failed: " + error.message);
+                errorDiv.innerHTML = '❌ ' + error.message;
             }
         });
     </script>
