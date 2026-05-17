@@ -4,327 +4,236 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Secure Payment - BELG SERVICES</title>
-    <!-- Font Awesome -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="api.js"></script>
+    <script src="auth.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #fefcf5;
-            color: #1e2a2f;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Header Navigation - Matching index */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            background: white;
-            border-bottom: 1px solid #f0e4d8;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .logo-img {
-            height: 45px;
-            width: auto;
-            object-fit: contain;
-        }
-        .logo-text {
-            font-size: 1.6rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #c49a6c, #8b5a2b);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .nav-links {
-            display: flex;
-            gap: 28px;
-            list-style: none;
-            align-items: center;
-        }
-        .nav-links a {
-            text-decoration: none;
-            font-weight: 500;
-            color: #2c3e2f;
-            transition: 0.2s;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #fefcf5; color: #1e2a2f; min-height: 100vh; display: flex; flex-direction: column; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: white; border-bottom: 1px solid #f0e4d8; flex-wrap: wrap; gap: 20px; }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-img { height: 45px; width: auto; }
+        .logo-text { font-size: 1.6rem; font-weight: 800; background: linear-gradient(135deg, #c49a6c, #8b5a2b); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; font-weight: 500; color: #2c3e2f; transition: 0.2s; }
         .nav-links a:hover { color: #c49a6c; }
-
-        /* Payment Container */
-        .payment-container {
-            flex: 1;
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 24px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 32px;
-        }
-
-        /* Payment Form Card */
-        .payment-card {
-            background: white;
-            border-radius: 32px;
-            padding: 32px;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
-            border: 1px solid #f0e4d8;
-        }
-        .payment-card h2 {
-            font-size: 1.6rem;
-            margin-bottom: 8px;
-            color: #1e2a2f;
-        }
-        .secure-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #d4f5d0;
-            padding: 6px 14px;
-            border-radius: 40px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #2e6b1f;
-            margin-bottom: 24px;
-        }
-        .card-icons {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
-            justify-content: flex-end;
-        }
-        .card-icons i {
-            font-size: 2rem;
-            color: #6e5e4a;
-            transition: 0.2s;
-        }
-        .card-icons i:hover {
-            color: #c49a6c;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-        .input-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 0.85rem;
-            color: #1e2a2f;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 14px 18px;
-            border: 1.5px solid #e2cfbc;
-            border-radius: 60px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            transition: 0.2s;
-            background: white;
-        }
-        .input-group input:focus {
-            outline: none;
-            border-color: #c49a6c;
-            box-shadow: 0 0 0 3px rgba(196,154,108,0.1);
-        }
-        .row-2col {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-        .pay-btn {
-            width: 100%;
-            background: #c49a6c;
-            border: none;
-            padding: 16px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border-radius: 60px;
-            color: white;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 16px;
-        }
-        .pay-btn:hover {
-            background: #a57c52;
-            transform: translateY(-2px);
-        }
-
-        /* Order Summary */
-        .summary-card {
-            background: white;
-            border-radius: 32px;
-            padding: 32px;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
-            border: 1px solid #f0e4d8;
-            height: fit-content;
-        }
-        .summary-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            color: #1e2a2f;
-        }
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #f0e4d8;
-        }
-        .summary-total {
-            display: flex;
-            justify-content: space-between;
-            padding: 16px 0;
-            font-weight: 800;
-            font-size: 1.2rem;
-            color: #c49a6c;
-        }
-        .payment-methods {
-            margin-top: 24px;
-            padding-top: 16px;
-            text-align: center;
-        }
-        .payment-methods p {
-            font-size: 0.75rem;
-            color: #8b7a67;
-        }
-
-        /* Footer */
-        .footer {
-            background: #2c3e2f;
-            color: white;
-            text-align: center;
-            padding: 24px;
-            margin-top: 40px;
-        }
-        .footer p {
-            opacity: 0.8;
-            font-size: 0.8rem;
-        }
-
-        @media (max-width: 800px) {
-            .payment-container {
-                grid-template-columns: 1fr;
-                padding: 0 20px;
-            }
-            .navbar {
-                padding: 16px 20px;
-                flex-direction: column;
-            }
-            .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-        }
+        .payment-container { flex: 1; max-width: 1200px; margin: 40px auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+        .payment-card { background: white; border-radius: 32px; padding: 32px; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1); border: 1px solid #f0e4d8; }
+        .payment-card h2 { font-size: 1.6rem; margin-bottom: 8px; color: #1e2a2f; }
+        .secure-badge { display: inline-flex; align-items: center; gap: 8px; background: #d4f5d0; padding: 6px 14px; border-radius: 40px; font-size: 0.75rem; font-weight: 600; color: #2e6b1f; margin-bottom: 24px; }
+        .card-icons { display: flex; gap: 12px; margin-bottom: 24px; justify-content: flex-end; }
+        .card-icons i { font-size: 2rem; color: #6e5e4a; transition: 0.2s; }
+        .card-icons i:hover { color: #c49a6c; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.85rem; color: #1e2a2f; }
+        .input-group input { width: 100%; padding: 14px 18px; border: 1.5px solid #e2cfbc; border-radius: 60px; font-family: 'Inter', sans-serif; font-size: 0.9rem; transition: 0.2s; background: white; }
+        .input-group input:focus { outline: none; border-color: #c49a6c; box-shadow: 0 0 0 3px rgba(196,154,108,0.1); }
+        .row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .pay-btn { width: 100%; background: #c49a6c; border: none; padding: 16px; font-size: 1.1rem; font-weight: 700; border-radius: 60px; color: white; cursor: pointer; transition: 0.2s; margin-top: 16px; }
+        .pay-btn:hover { background: #a57c52; transform: translateY(-2px); }
+        .pay-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+        .summary-card { background: white; border-radius: 32px; padding: 32px; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1); border: 1px solid #f0e4d8; height: fit-content; }
+        .summary-card h3 { font-size: 1.4rem; margin-bottom: 20px; color: #1e2a2f; }
+        .summary-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0e4d8; }
+        .summary-total { display: flex; justify-content: space-between; padding: 16px 0; font-weight: 800; font-size: 1.2rem; color: #c49a6c; }
+        .payment-methods { margin-top: 24px; padding-top: 16px; text-align: center; }
+        .payment-methods p { font-size: 0.75rem; color: #8b7a67; }
+        .alert { padding: 12px 16px; border-radius: 12px; margin-bottom: 20px; }
+        .alert-error { background: #ffe0e0; color: #c44; }
+        .alert-success { background: #d4f5d0; color: #2e6b1f; }
+        .footer { background: #2c3e2f; color: white; text-align: center; padding: 24px; margin-top: 40px; }
+        .footer p { opacity: 0.8; font-size: 0.8rem; }
+        @media (max-width: 800px) { .payment-container { grid-template-columns: 1fr; padding: 0 20px; } .navbar { padding: 16px 20px; flex-direction: column; } .nav-links { flex-wrap: wrap; justify-content: center; } }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <div class="navbar">
-        <div class="logo-area">
-            <img src="logo.png" alt="BELG SERVICES" class="logo-img" onerror="this.src='https://placehold.co/50x50?text=BS'">
-            <span class="logo-text">BELG SERVICES</span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
+<div class="navbar">
+    <div class="logo-area">
+        <img src="logo.png" alt="BELG SERVICES" class="logo-img" onerror="this.src='https://placehold.co/50x50?text=BS'">
+        <span class="logo-text">BELG SERVICES</span>
     </div>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="client.html">Client Portal</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</div>
 
-    <!-- Payment Section -->
-    <div class="payment-container">
-        <!-- Left Side: Payment Form -->
-        <div class="payment-card">
-            <h2>Secure Payment</h2>
-            <div class="secure-badge">
-                <i class="fas fa-lock"></i> 256-bit SSL Secure
-            </div>
-            <div class="card-icons">
-                <i class="fab fa-cc-visa"></i>
-                <i class="fab fa-cc-mastercard"></i>
-                <i class="fab fa-cc-amex"></i>
-                <i class="fab fa-cc-paypal"></i>
-            </div>
+<div class="payment-container">
+    <div class="payment-card">
+        <h2>Secure Payment</h2>
+        <div class="secure-badge"><i class="fas fa-lock"></i> 256-bit SSL Secure</div>
+        <div class="card-icons">
+            <i class="fab fa-cc-visa"></i>
+            <i class="fab fa-cc-mastercard"></i>
+            <i class="fab fa-cc-amex"></i>
+        </div>
 
-            <form id="paymentForm">
+        <div id="paymentMessage"></div>
+
+        <form id="paymentForm">
+            <div class="input-group">
+                <label>Cardholder Name</label>
+                <input type="text" id="cardName" placeholder="John Smith" required>
+            </div>
+            <div class="input-group">
+                <label>Card Number</label>
+                <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+            </div>
+            <div class="row-2col">
                 <div class="input-group">
-                    <label>Cardholder Name</label>
-                    <input type="text" placeholder="John Smith" required>
+                    <label>Expiry Date (MM/YY)</label>
+                    <input type="text" id="cardExpiry" placeholder="MM/YY" required>
                 </div>
                 <div class="input-group">
-                    <label>Card Number</label>
-                    <input type="text" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                    <label>CVV</label>
+                    <input type="password" id="cardCvv" placeholder="123" maxlength="4" required>
                 </div>
-                <div class="row-2col">
-                    <div class="input-group">
-                        <label>Expiry Date (MM/YY)</label>
-                        <input type="text" placeholder="MM/YY" required>
-                    </div>
-                    <div class="input-group">
-                        <label>CVV</label>
-                        <input type="password" placeholder="123" maxlength="4" required>
-                    </div>
-                </div>
-                <button type="submit" class="pay-btn"><i class="fas fa-shield-alt"></i> Pay Securely</button>
-            </form>
-        </div>
-
-        <!-- Right Side: Order Summary -->
-        <div class="summary-card">
-            <h3>Order Summary</h3>
-            <div class="summary-item">
-                <span>Service Fee</span>
-                <span>$120.00</span>
             </div>
-            <div class="summary-item">
-                <span>VAT (21%)</span>
-                <span>$25.20</span>
-            </div>
-            <div class="summary-item">
-                <span>Platform Fee</span>
-                <span>$5.00</span>
-            </div>
-            <div class="summary-total">
-                <span>Total Amount</span>
-                <span>$150.20</span>
-            </div>
-            <div class="payment-methods">
-                <p><i class="fas fa-check-circle"></i> Money-back guarantee</p>
-                <p><i class="fas fa-headset"></i> 24/7 customer support</p>
-            </div>
-        </div>
+            <button type="submit" class="pay-btn" id="payBtn"><i class="fas fa-shield-alt"></i> Pay Securely</button>
+        </form>
     </div>
 
-    <!-- Footer -->
-    <div class="footer">
-        <p>© 2025 BELG SERVICES — Secure Payment Gateway</p>
+    <div class="summary-card">
+        <h3>Order Summary</h3>
+        <div id="summaryDetails">
+            <div class="summary-item"><span>Service</span><span id="serviceName">Loading...</span></div>
+            <div class="summary-item"><span>Amount</span><span id="serviceAmount">$0.00</span></div>
+            <div class="summary-item"><span>Platform Fee</span><span>$5.00</span></div>
+            <div class="summary-total"><span>Total Amount</span><span id="totalAmount">$0.00</span></div>
+        </div>
+        <div class="payment-methods">
+            <p><i class="fas fa-check-circle"></i> Money-back guarantee</p>
+            <p><i class="fas fa-headset"></i> 24/7 customer support</p>
+        </div>
     </div>
+</div>
 
-    <script>
-        document.getElementById('paymentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert("✅ Payment processed successfully! (Demo mode)\nThank you for trusting BELG SERVICES.");
-            // In real scenario: redirect to success page
-            // window.location.href = "payment-success.html";
-        });
-    </script>
+<div class="footer">
+    <p>© 2025 BELG SERVICES — Secure Payment Gateway</p>
+</div>
+
+<script>
+    let currentUser = null;
+    let bookingData = null;
+    let targetProfile = null;
+
+    async function init() {
+        const { data: { user } } = await sb.auth.getUser();
+        if (!user) {
+            window.location.href = 'login.html';
+            return;
+        }
+        currentUser = user;
+        
+        const profile = await window.API.getProfile(currentUser.id);
+        if (profile.role !== 'client') {
+            document.getElementById('paymentMessage').innerHTML = '<div class="alert alert-error">Only clients can make payments. Please register as a client.</div>';
+            document.getElementById('payBtn').disabled = true;
+            return;
+        }
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookingId = urlParams.get('booking_id');
+        const companyId = urlParams.get('company_id');
+        const workerId = urlParams.get('worker_id');
+        
+        if (bookingId) {
+            const { data: booking } = await sb.from('bookings').select('*').eq('id', bookingId).single();
+            if (booking) {
+                bookingData = booking;
+                if (booking.target_type === 'worker') {
+                    targetProfile = await window.API.getWorker(booking.target_id);
+                    const workerProfile = await window.API.getProfile(booking.target_id);
+                    document.getElementById('serviceName').innerText = `Service from ${workerProfile?.full_name || 'Worker'}`;
+                } else {
+                    targetProfile = await window.API.getCompany(booking.target_id);
+                    document.getElementById('serviceName').innerText = `Service from ${targetProfile?.company_name || 'Company'}`;
+                }
+                const amount = booking.price || 100;
+                document.getElementById('serviceAmount').innerHTML = `$${amount.toFixed(2)}`;
+                document.getElementById('totalAmount').innerHTML = `$${(amount + 5).toFixed(2)}`;
+            }
+        } else if (companyId) {
+            targetProfile = await window.API.getCompany(companyId);
+            document.getElementById('serviceName').innerText = `Service from ${targetProfile?.company_name || 'Company'}`;
+            document.getElementById('serviceAmount').innerHTML = `$150.00`;
+            document.getElementById('totalAmount').innerHTML = `$155.00`;
+        } else if (workerId) {
+            targetProfile = await window.API.getWorker(workerId);
+            const workerProfile = await window.API.getProfile(workerId);
+            document.getElementById('serviceName').innerText = `Service from ${workerProfile?.full_name || 'Worker'}`;
+            document.getElementById('serviceAmount').innerHTML = `$120.00`;
+            document.getElementById('totalAmount').innerHTML = `$125.00`;
+        } else {
+            document.getElementById('serviceName').innerText = 'General Service';
+            document.getElementById('serviceAmount').innerHTML = `$100.00`;
+            document.getElementById('totalAmount').innerHTML = `$105.00`;
+        }
+    }
+    
+    document.getElementById('paymentForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const cardName = document.getElementById('cardName').value;
+        const cardNumber = document.getElementById('cardNumber').value;
+        const cardExpiry = document.getElementById('cardExpiry').value;
+        const cardCvv = document.getElementById('cardCvv').value;
+        
+        if (!cardName || !cardNumber || !cardExpiry || !cardCvv) {
+            document.getElementById('paymentMessage').innerHTML = '<div class="alert alert-error">Please fill in all card details.</div>';
+            return;
+        }
+        
+        const payBtn = document.getElementById('payBtn');
+        payBtn.disabled = true;
+        payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        
+        setTimeout(async function() {
+            try {
+                const totalText = document.getElementById('totalAmount').innerText;
+                const amount = parseFloat(totalText.replace('$', ''));
+                
+                const urlParams = new URLSearchParams(window.location.search);
+                const bookingId = urlParams.get('booking_id');
+                
+                if (bookingId && bookingData) {
+                    await window.API.updateBookingStatus(bookingId, 'completed');
+                    await window.API.addPayment(bookingId, amount, 'card');
+                    
+                    if (bookingData.target_type === 'worker') {
+                        const conversation = await window.API.getConversation(currentUser.id, bookingData.target_id);
+                        if (conversation) {
+                            await window.API.sendMessage(conversation.id, currentUser.id, 
+                                `✅ Payment of $${amount} completed! Our worker will contact you shortly.`);
+                        }
+                    }
+                }
+                
+                document.getElementById('paymentMessage').innerHTML = '<div class="alert alert-success">✅ Payment successful! You will be redirected shortly.</div>';
+                
+                setTimeout(() => {
+                    if (bookingId) {
+                        window.location.href = `chat.html`;
+                    } else {
+                        window.location.href = 'client.html';
+                    }
+                }, 2000);
+                
+            } catch (error) {
+                document.getElementById('paymentMessage').innerHTML = `<div class="alert alert-error">❌ Payment failed: ${error.message}</div>`;
+                payBtn.disabled = false;
+                payBtn.innerHTML = '<i class="fas fa-shield-alt"></i> Pay Securely';
+            }
+        }, 1500);
+    });
+    
+    init();
+</script>
 </body>
-  </html>
+</html>
