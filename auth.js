@@ -16,14 +16,17 @@ const Auth = {
         if (error) throw error;
 
         if (data.user) {
-            await supabaseClient.from('profiles').insert([
-                { 
-                    id: data.user.id, 
-                    full_name: fullName, 
-                    email: email, 
-                    role: role 
-                }
-            ]);
+            const { error: profileError } = await supabaseClient.from('profiles').insert({
+                id: data.user.id,
+                full_name: fullName,
+                email: email,
+                role: role,
+                created_at: new Date()
+            });
+            
+            if (profileError) {
+                console.error("Profile insert error:", profileError);
+            }
         }
         return data;
     },
@@ -34,17 +37,28 @@ const Auth = {
             password
         });
         if (error) throw error;
+        
+        localStorage.setItem('user', JSON.stringify(data.user));
         return data;
     },
 
     async signOut() {
         const { error } = await supabaseClient.auth.signOut();
         if (error) throw error;
-        window.location.href = 'login.html';
+        localStorage.removeItem('user');
+        window.location.href = 'index.html';
     },
 
     async getUser() {
+        const stored = localStorage.getItem('user');
+        if (stored) {
+            return JSON.parse(stored);
+        }
+        
         const { data: { user } } = await supabaseClient.auth.getUser();
+        if (user) {
+            localStorage.setItem('user', JSON.stringify(user));
+        }
         return user;
     }
 };
