@@ -22,8 +22,17 @@
         .section h2 { color: #003366; margin-bottom: 10px; }
         .gallery { display: flex; gap: 10px; flex-wrap: wrap; }
         .gallery img { width: 150px; height: 120px; border-radius: 8px; object-fit: cover; background: #eee; }
+        .gallery video { width: 150px; height: 120px; border-radius: 8px; object-fit: cover; background: #000; }
         .action-btn { padding: 12px 20px; background: #003366; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; margin-right: 5px; }
         .action-btn:hover { background: #002244; }
+        .social-links { display: flex; gap: 15px; justify-content: center; margin-top: 15px; }
+        .social-links a { color: #003366; text-decoration: none; font-size: 24px; }
+        .contact-info { margin-top: 10px; }
+        .contact-info a { color: #003366; text-decoration: none; }
+        .project-status { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; margin-top: 8px; }
+        .status-completed { background: #28a745; color: white; }
+        .status-in_progress { background: #ffc107; color: #333; }
+        .status-planned { background: #17a2b8; color: white; }
     </style>
 </head>
 <body>
@@ -42,19 +51,27 @@
 
 <div class="info-boxes">
     <div class="info-box"><h3>Projects</h3><p id="compProjects">0</p></div>
+    <div class="info-box"><h3>Founded</h3><p id="compFounded">-</p></div>
     <div class="info-box"><h3>Response</h3><p>Fast</p></div>
-    <div class="info-box"><h3>Location</h3><p id="compAddress">-</p></div>
 </div>
 
 <div class="section">
     <h2>About the Company</h2>
     <p id="compBio">Loading information...</p>
+    <div class="social-links" id="socialLinks"></div>
+    <div class="contact-info" id="contactInfo"></div>
 </div>
 
 <div class="section">
-    <h2>Completed Work</h2>
+    <h2>Completed Projects</h2>
     <div class="gallery" id="compGallery">
-        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Projects In Progress</h2>
+    <div class="gallery" id="inProgressGallery">
+    </div>
 </div>
 
 <div class="section">
@@ -66,7 +83,6 @@
     const sb = supabase.createClient(window.env.URL, window.env.KEY);
 
     async function loadCompanyProfile() {
-        // الحصول على الـ ID من الرابط (مثلاً: company-profile.html?id=123)
         const urlParams = new URLSearchParams(window.location.search);
         const companyId = urlParams.get('id');
 
@@ -75,28 +91,119 @@
             return;
         }
 
-        // 1. جلب بيانات البروفايل
-        const { data: profile, error } = await sb.from('profiles').select('*').eq('id', companyId).single();
+        const { data: profile, error: profileError } = await sb
+            .from('profiles')
+            .select('*')
+            .eq('id', companyId)
+            .single();
 
-        if (profile) {
-            document.getElementById('compName').innerText = profile.full_name;
-            document.getElementById('compLogo').src = profile.avatar_url || 'https://via.placeholder.com/140';
-            document.getElementById('compBio').innerText = profile.bio || "No description available.";
-            document.getElementById('compAddress').innerText = profile.address || "Belgium";
-            document.getElementById('compRating').innerText = "★".repeat(Math.floor(profile.rating || 5)) + ` (${profile.rating || 5.0})`;
+        if (profileError) {
+            console.error("Profile error:", profileError);
+            return;
         }
 
-        // 2. جلب صور المعرض
-        const { data: gallery } = await sb.from('work_gallery').select('*').eq('user_id', companyId);
-        if (gallery && gallery.length > 0) {
-            const galleryDiv = document.getElementById('compGallery');
-            galleryDiv.innerHTML = gallery.map(img => `<img src="${img.image_url}" alt="Work">`).join('');
-            document.getElementById('compProjects').innerText = gallery.length + "+";
+        const { data: companyInfo, error: companyError } = await sb
+            .from('companies')
+            .select('*')
+            .eq('id', companyId)
+            .single();
+
+        document.getElementById('compName').innerText = companyInfo?.company_name || profile.full_name || 'Company Name';
+        document.getElementById('compLogo').src = companyInfo?.logo_url || profile.avatar_url || 'https://via.placeholder.com/140';
+        document.getElementById('compBio').innerText = companyInfo?.description || profile.bio || "No description available.";
+        document.getElementById('compFounded').innerText = companyInfo?.founded_date || 'Not specified';
+
+        const ratingValue = companyInfo?.rating_avg || 4.5;
+        const stars = '★'.repeat(Math.floor(ratingValue)) + '☆'.repeat(5 - Math.floor(ratingValue));
+        document.getElementById('compRating').innerHTML = `${stars} (${ratingValue})`;
+
+        const socialHtml = [];
+        if (companyInfo?.instagram) socialHtml.push(`<a href="${companyInfo.instagram}" target="_blank"><i class="fab fa-instagram"></i></a>`);
+        if (companyInfo?.facebook) socialHtml.push(`<a href="${companyInfo.facebook}" target="_blank"><i class="fab fa-facebook"></i></a>`);
+        if (companyInfo?.website) socialHtml.push(`<a href="${companyInfo.website}" target="_blank"><i class="fas fa-globe"></i></a>`);
+        document.getElementById('socialLinks').innerHTML = socialHtml.join('');
+
+        if (companyInfo?.whatsapp) {
+            document.getElementById('contactInfo').innerHTML = `<a href="https://wa.me/${companyInfo.whatsapp}" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp: ${companyInfo.whatsapp}</a>`;
+        }
+
+        const { data: projects, error: projectsError } = await sb
+            .from('company_projects')
+            .select('*')
+            .eq('company_id', companyId)
+            .order('created_at', { ascending: false });
+
+        if (projects && projects.length > 0) {
+            document.getElementById('compProjects').innerText = projects.length;
+
+            const completedProjects = projects.filter(p => p.status === 'completed');
+            const inProgressProjects = projects.filter(p => p.status === 'in_progress');
+
+            const completedGallery = document.getElementById('compGallery');
+            const inProgressGallery = document.getElementById('inProgressGallery');
+
+            for (const project of completedProjects) {
+                const { data: media } = await sb
+                    .from('project_media')
+                    .select('*')
+                    .eq('project_id', project.id)
+                    .limit(3);
+                
+                if (media && media.length > 0) {
+                    media.forEach(m => {
+                        if (m.media_type === 'video') {
+                            completedGallery.innerHTML += `<video src="${m.media_url}" controls></video>`;
+                        } else {
+                            completedGallery.innerHTML += `<img src="${m.media_url}" alt="${project.title}">`;
+                        }
+                    });
+                } else {
+                    completedGallery.innerHTML += `<div style="width:150px; padding:10px; text-align:center;"><strong>${project.title}</strong><br><span class="project-status status-completed">Completed</span></div>`;
+                }
+            }
+
+            for (const project of inProgressProjects) {
+                const { data: media } = await sb
+                    .from('project_media')
+                    .select('*')
+                    .eq('project_id', project.id)
+                    .limit(3);
+                
+                if (media && media.length > 0) {
+                    media.forEach(m => {
+                        if (m.media_type === 'video') {
+                            inProgressGallery.innerHTML += `<video src="${m.media_url}" controls></video>`;
+                        } else {
+                            inProgressGallery.innerHTML += `<img src="${m.media_url}" alt="${project.title}">`;
+                        }
+                    });
+                } else {
+                    inProgressGallery.innerHTML += `<div style="width:150px; padding:10px; text-align:center;"><strong>${project.title}</strong><br><span class="project-status status-in_progress">In Progress</span></div>`;
+                }
+            }
+
+            if (completedProjects.length === 0) {
+                completedGallery.innerHTML = '<p>No completed projects yet.</p>';
+            }
+            if (inProgressProjects.length === 0) {
+                inProgressGallery.innerHTML = '<p>No projects in progress.</p>';
+            }
+        } else {
+            document.getElementById('compProjects').innerText = '0';
+            document.getElementById('compGallery').innerHTML = '<p>No projects yet.</p>';
+            document.getElementById('inProgressGallery').innerHTML = '<p>No projects yet.</p>';
         }
     }
 
-    function requestWorkers() { window.location.href = "payment.html"; }
-    function openChat() { window.location.href = "chat.html"; }
+    function requestWorkers() { 
+        const urlParams = new URLSearchParams(window.location.search);
+        const companyId = urlParams.get('id');
+        window.location.href = `payment.html?company_id=${companyId}`;
+    }
+    
+    function openChat() { 
+        window.location.href = "chat.html"; 
+    }
 
     loadCompanyProfile();
 </script>
