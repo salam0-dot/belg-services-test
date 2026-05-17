@@ -1,222 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Terms & Conditions — BELG SERVICES</title>
-
-<style>
-
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background-color: #f8f5ec; /* ivory */
-  background-image: radial-gradient(circle at top left, #f9f6ef 0%, #f3efe5 100%);
-  line-height: 1.7;
-}
-
-/* NAV */
-.top-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: #3a332f; /* dark brown */
-  padding: 12px 0;
-  text-align: center;
-  z-index: 999;
-}
-
-.top-nav a {
-  color: white;
-  margin: 0 15px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-/* HEADER */
-header {
-  margin-top: 100px;
-  text-align: center;
-  padding: 20px;
-}
-
-.logo {
-  width: 160px;
-}
-
-h1 {
-  color: #003366; /* dark blue */
-  font-size: 32px;
-}
-
-/* CONTENT */
-.terms-container {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 20px;
-  background: #ffffff;
-  border: 2px solid #2e7d32; /* green border */
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-}
-
-.section-title {
-  font-size: 22px;
-  color: #003366; /* dark blue */
-  margin-top: 30px;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-p {
-  color: #111; /* natural black */
-  font-size: 15px;
-}
-
-/* FOOTER */
-.footer {
-  background: #3a332f; /* dark brown */
-  color: white;
-  padding: 20px 10px;
-  text-align: center;
-  margin-top: 40px;
-  font-size: 14px;
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Terms & Conditions - BELG SERVICES</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #fefcf5; color: #1e2a2f; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: white; border-bottom: 1px solid #f0e4d8; flex-wrap: wrap; gap: 20px; }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-img { height: 45px; width: auto; }
+        .logo-text { font-size: 1.6rem; font-weight: 800; background: linear-gradient(135deg, #c49a6c, #8b5a2b); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; font-weight: 500; color: #2c3e2f; transition: 0.2s; }
+        .page-header { background: linear-gradient(135deg, #c49a6c, #a57c52); color: white; text-align: center; padding: 60px 20px; }
+        .page-header h1 { font-size: 2.5rem; margin-bottom: 16px; }
+        .content-container { max-width: 900px; margin: 60px auto; padding: 0 20px; }
+        .terms-card { background: white; border-radius: 28px; padding: 40px; border: 1px solid #f0e4d8; }
+        .terms-card h2 { color: #c49a6c; margin: 25px 0 15px; }
+        .terms-card h2:first-child { margin-top: 0; }
+        .terms-card p { line-height: 1.6; color: #5a4a3a; margin-bottom: 15px; }
+        .terms-card ul { margin-left: 25px; margin-bottom: 15px; color: #5a4a3a; }
+        .footer { background: #2c3e2f; color: white; text-align: center; padding: 30px; margin-top: 40px; }
+        @media (max-width: 768px) { .navbar { flex-direction: column; } }
+    </style>
 </head>
-
 <body>
 
-<!-- NAV -->
-<nav class="top-nav">
-  <a href="index.html">Home</a>
-  <a href="services.html">Services</a>
-  <a href="pricing.html">Pricing</a>
-  <a href="terms.html">Terms</a>
-  <a href="contact.html">Contact</a>
-</nav>
-
-<!-- HEADER -->
-<header>
-  <img src="logo.png" class="logo">
-  <h1>Terms & Conditions</h1>
-</header>
-
-<!-- CONTENT -->
-<div class="terms-container">
-
-  <div class="section-title">1. Introduction</div>
-  <p>
-    BELG SERVICES is an intermediary platform connecting clients, workers, and companies.
-    By using the platform, you agree to these Terms & Conditions.
-  </p>
-
-  <div class="section-title">2. Platform Role</div>
-  <p>
-    BELG SERVICES does not provide services directly.  
-    All services are performed by independent workers or registered companies.  
-    The platform manages communication, booking, payments, and security.
-  </p>
-
-  <div class="section-title">3. Commission System</div>
-  <p>
-    • Clients pay a 5% commission after the job is completed.<br>
-    • Workers pay a 5% commission deducted after job completion.<br>
-    • Companies do not pay commission; they use subscription plans.<br>
-    • Commission is non-refundable once the service is completed.
-  </p>
-
-  <div class="section-title">4. Company Subscription Plans</div>
-  <p>
-    • Basic Plan: 19€/month — normal visibility.<br>
-    • Advanced Plan: 39€/month — top pages + 15 days ads.<br>
-    • Premium Plan: 79€/month — homepage + 30 days ads + support.<br>
-    Subscriptions renew automatically unless cancelled.
-  </p>
-
-  <div class="section-title">5. Referral System</div>
-  <p>
-    • Clients & Workers: every 10 users registered with your code → 15 days with 0% commission.<br>
-    • Companies: 5 companies or 20 users registered with your code → 15 days free ads.<br>
-    Abuse of referral codes may result in account suspension.
-  </p>
-
-  <div class="section-title">6. Payment Rules</div>
-  <p>
-    • All payments must be made inside the platform.<br>
-    • Exchanging money outside the platform is strictly prohibited.<br>
-    • BELG SERVICES may freeze accounts suspected of bypassing payments.<br>
-    • Payment information is encrypted and processed securely.
-  </p>
-
-  <div class="section-title">7. Contact Information Restrictions</div>
-  <p>
-    • Exchanging phone numbers, addresses, emails, or external links is prohibited before payment.<br>
-    • The platform automatically blocks messages containing contact information.<br>
-    • Contact details are unlocked only after payment is confirmed.<br>
-    • Attempting to bypass this system may result in account suspension.
-  </p>
-
-  <div class="section-title">8. User Responsibilities</div>
-  <p>
-    • Provide accurate information.<br>
-    • Respect other users.<br>
-    • Do not attempt fraud or bypass platform rules.<br>
-    • Report suspicious activity immediately.
-  </p>
-
-  <div class="section-title">9. Worker Responsibilities</div>
-  <p>
-    • Arrive on time and complete the job professionally.<br>
-    • Do not request direct payment from clients.<br>
-    • Do not exchange contact information before payment.<br>
-    • Maintain a high rating to stay active on the platform.
-  </p>
-
-  <div class="section-title">10. Client Responsibilities</div>
-  <p>
-    • Provide accurate job details and address.<br>
-    • Pay through the platform only.<br>
-    • Confirm job completion honestly.<br>
-    • Do not request direct contact before payment.
-  </p>
-
-  <div class="section-title">11. Company Responsibilities</div>
-  <p>
-    • Maintain valid business registration.<br>
-    • Pay subscription fees on time.<br>
-    • Do not attempt to bypass the platform.<br>
-    • Respect advertising rules and visibility periods.
-  </p>
-
-  <div class="section-title">12. Account Suspension</div>
-  <p>
-    BELG SERVICES may suspend or terminate accounts involved in:
-    fraud, harassment, bypassing payments, sharing contact information before payment,
-    or violating platform rules.
-  </p>
-
-  <div class="section-title">13. Liability</div>
-  <p>
-    BELG SERVICES is not responsible for damages caused by workers or companies.
-    The platform only facilitates communication and payments.
-  </p>
-
-  <div class="section-title">14. Updates to Terms</div>
-  <p>
-    BELG SERVICES may update these terms at any time.  
-    Continued use of the platform means acceptance of the updated terms.
-  </p>
-
+<div class="navbar">
+    <div class="logo-area">
+        <img src="logo.png" alt="logo" class="logo-img" onerror="this.src='https://placehold.co/50x50?text=BS'">
+        <span class="logo-text">BELG SERVICES</span>
+    </div>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
 </div>
 
-<!-- FOOTER -->
-<footer class="footer">
-  © 2024 BELG SERVICES — All Rights Reserved
-</footer>
+<div class="page-header">
+    <h1>Terms & Conditions</h1>
+    <p>Please read these terms carefully before using our services</p>
+</div>
 
+<div class="content-container">
+    <div class="terms-card">
+        <h2>1. Acceptance of Terms</h2>
+        <p>By accessing or using BELG SERVICES, you agree to be bound by these Terms & Conditions. If you disagree with any part, please do not use our platform.</p>
+        
+        <h2>2. User Accounts</h2>
+        <p>To use our services, you must create an account. You are responsible for maintaining the confidentiality of your account credentials and for all activities under your account.</p>
+        
+        <h2>3. Services Provided</h2>
+        <p>BELG SERVICES connects clients with workers and companies. We are a marketplace platform and not responsible for the actual services provided by third parties.</p>
+        
+        <h2>4. Payments</h2>
+        <p>All payments are processed securely through our platform. Workers' contact information is only revealed after payment confirmation to ensure safety and security.</p>
+        
+        <h2>5. Cancellations & Refunds</h2>
+        <p>Cancellations must be made at least 24 hours before the scheduled service. Refunds are subject to review on a case-by-case basis.</p>
+        
+        <h2>6. User Conduct</h2>
+        <p>Users must not engage in fraudulent activities, harassment, or any behavior that violates Belgian laws.</p>
+        
+        <h2>7. Privacy</h2>
+        <p>Your privacy is important to us. Please review our Privacy Policy to understand how we collect and use your information.</p>
+        
+        <h2>8. Modifications</h2>
+        <p>We reserve the right to modify these terms at any time. Continued use of the platform constitutes acceptance of the modified terms.</p>
+        
+        <h2>9. Contact Us</h2>
+        <p>If you have any questions about these Terms, please contact us at info@belg-services.com</p>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2025 BELG SERVICES — All Rights Reserved</p>
+</div>
 </body>
 </html>
