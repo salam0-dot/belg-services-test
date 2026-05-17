@@ -1,171 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notifications — BELG SERVICES</title>
-
-<style>
-
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background: #f7f7f7;
-}
-
-/* NAV */
-.top-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: #003366;
-  padding: 12px 0;
-  text-align: center;
-  z-index: 999;
-}
-
-.top-nav a {
-  color: white;
-  margin: 0 15px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-/* HEADER */
-header {
-  margin-top: 100px;
-  text-align: center;
-}
-
-.logo {
-  width: 160px;
-}
-
-h1 {
-  color: #003366;
-  font-size: 32px;
-}
-
-/* NOTIFICATIONS */
-.notifications-container {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 20px;
-}
-
-.notification-card {
-  background: white;
-  padding: 18px;
-  border-radius: 12px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  display: flex;
-  gap: 15px;
-  align-items: center;
-}
-
-.icon {
-  font-size: 26px;
-}
-
-.notification-content h3 {
-  margin: 0;
-  font-size: 18px;
-  color: #003366;
-}
-
-.notification-content p {
-  margin: 5px 0;
-  color: #444;
-  font-size: 14px;
-}
-
-.time {
-  font-size: 12px;
-  color: #777;
-}
-
-/* COLORS */
-.success { border-left: 5px solid #28a745; }
-.warning { border-left: 5px solid #ffc107; }
-.info    { border-left: 5px solid #17a2b8; }
-.danger  { border-left: 5px solid #dc3545; }
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Notifications — BELG SERVICES</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="api.js"></script>
+    <script src="auth.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #fefcf5; color: #1e2a2f; }
+        
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: white; border-bottom: 1px solid #f0e4d8; flex-wrap: wrap; gap: 20px; }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-img { height: 45px; width: auto; }
+        .logo-text { font-size: 1.6rem; font-weight: 800; background: linear-gradient(135deg, #c49a6c, #8b5a2b); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; font-weight: 500; color: #2c3e2f; transition: 0.2s; }
+        .nav-links a:hover { color: #c49a6c; }
+        
+        .page-header { background: linear-gradient(135deg, #c49a6c, #a57c52); color: white; text-align: center; padding: 60px 20px; }
+        .page-header h1 { font-size: 2.5rem; margin-bottom: 16px; }
+        .page-header p { font-size: 1.1rem; max-width: 600px; margin: 0 auto; opacity: 0.9; }
+        
+        .notifications-container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        
+        .notification-card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #f0e4d8; display: flex; gap: 16px; align-items: flex-start; transition: 0.2s; cursor: pointer; }
+        .notification-card:hover { transform: translateX(5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .notification-card.unread { background: #fef5ea; border-left: 4px solid #c49a6c; }
+        .notification-card.read { opacity: 0.8; }
+        .icon { font-size: 28px; min-width: 50px; text-align: center; }
+        .notification-content { flex: 1; }
+        .notification-content h3 { margin: 0 0 5px; font-size: 1rem; color: #1e2a2f; }
+        .notification-content p { margin: 0 0 8px; color: #6e5e4a; font-size: 0.85rem; line-height: 1.4; }
+        .time { font-size: 0.7rem; color: #c49a6c; }
+        
+        .mark-read-btn { background: transparent; border: 1px solid #c49a6c; color: #c49a6c; padding: 6px 16px; border-radius: 30px; font-size: 0.7rem; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        .mark-read-btn:hover { background: #c49a6c; color: white; }
+        
+        .empty-state { text-align: center; padding: 60px 20px; color: #8b7a67; }
+        .empty-state i { font-size: 64px; margin-bottom: 20px; color: #e2cfbc; }
+        
+        .footer { background: #2c3e2f; color: white; text-align: center; padding: 30px; margin-top: 40px; }
+        
+        @media (max-width: 768px) { .navbar { flex-direction: column; } .notification-card { flex-direction: column; } .icon { text-align: left; } }
+    </style>
 </head>
-
 <body>
 
-<!-- NAV -->
-<nav class="top-nav">
-  <a href="dashboard.html">Dashboard</a>
-  <a href="my-bookings.html">My Bookings</a>
-  <a href="notifications.html">Notifications</a>
-  <a href="settings.html">Settings</a>
-</nav>
-
-<!-- HEADER -->
-<header>
-  <img src="logo.png" class="logo">
-  <h1>Notifications</h1>
-</header>
-
-<!-- NOTIFICATIONS LIST -->
-<div class="notifications-container">
-
-  <!-- Payment Notification -->
-  <div class="notification-card success">
-    <div class="icon">💳</div>
-    <div class="notification-content">
-      <h3>Payment Confirmed</h3>
-      <p>Your payment for the Cleaning Service (50€) has been successfully processed.</p>
-      <div class="time">2 minutes ago</div>
+<div class="navbar">
+    <div class="logo-area">
+        <img src="logo.png" alt="logo" class="logo-img" onerror="this.src='https://placehold.co/50x50?text=BS'">
+        <span class="logo-text">BELG SERVICES</span>
     </div>
-  </div>
-
-  <!-- Chat Warning (Blocked Message) -->
-  <div class="notification-card danger">
-    <div class="icon">🚫</div>
-    <div class="notification-content">
-      <h3>Message Blocked</h3>
-      <p>Your last message contained restricted contact information and was blocked for safety.</p>
-      <div class="time">10 minutes ago</div>
-    </div>
-  </div>
-
-  <!-- Worker Accepted -->
-  <div class="notification-card info">
-    <div class="icon">🧹</div>
-    <div class="notification-content">
-      <h3>Worker Accepted Your Request</h3>
-      <p>John Doe has accepted your cleaning request for today at 16:00.</p>
-      <div class="time">1 hour ago</div>
-    </div>
-  </div>
-
-  <!-- Referral Bonus -->
-  <div class="notification-card success">
-    <div class="icon">🎁</div>
-    <div class="notification-content">
-      <h3>Referral Reward Unlocked</h3>
-      <p>You invited 10 users. You now have 15 days with 0% commission.</p>
-      <div class="time">Yesterday</div>
-    </div>
-  </div>
-
-  <!-- System Info -->
-  <div class="notification-card warning">
-    <div class="icon">⚠️</div>
-    <div class="notification-content">
-      <h3>Important Notice</h3>
-      <p>Contact information will remain hidden until payment is completed.</p>
-      <div class="time">2 days ago</div>
-    </div>
-  </div>
-
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="client.html">Client Portal</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+    </ul>
 </div>
 
+<div class="page-header">
+    <h1><i class="fas fa-bell"></i> Notifications</h1>
+    <p>Stay updated with your latest alerts and activity</p>
+</div>
+
+<div class="notifications-container" id="notificationsContainer">
+    <div class="empty-state"><i class="fas fa-bell-slash"></i><p>Loading notifications...</p></div>
+</div>
+
+<div class="footer">
+    <p>© 2025 BELG SERVICES — All Rights Reserved</p>
+</div>
+
+<script>
+    let currentUser = null;
+    
+    async function init() {
+        const { data: { user } } = await sb.auth.getUser();
+        if (!user) {
+            window.location.href = 'login.html';
+            return;
+        }
+        currentUser = user;
+        await loadNotifications();
+    }
+    
+    async function loadNotifications() {
+        const container = document.getElementById('notificationsContainer');
+        const notifications = await window.API.getUserNotifications(currentUser.id);
+        
+        if (!notifications || notifications.length === 0) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-bell-slash"></i><p>No notifications yet. We\'ll notify you when something happens!</p></div>';
+            return;
+        }
+        
+        const unreadCount = notifications.filter(n => !n.is_read).length;
+        if (unreadCount > 0) {
+            document.title = `(${unreadCount}) Notifications - BELG SERVICES`;
+        }
+        
+        container.innerHTML = notifications.map(n => {
+            let icon = getIconForType(n.type);
+            let typeClass = getTypeClass(n.type);
+            
+            return `
+                <div class="notification-card ${n.is_read ? 'read' : 'unread'}" data-id="${n.id}">
+                    <div class="icon">${icon}</div>
+                    <div class="notification-content">
+                        <h3>${n.title || getTitleForType(n.type)}</h3>
+                        <p>${n.message || 'No additional details.'}</p>
+                        <div class="time">${formatTime(n.created_at)}</div>
+                        ${!n.is_read ? `<button class="mark-read-btn" onclick="markAsRead('${n.id}')">Mark as read</button>` : ''}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    function getIconForType(type) {
+        switch(type) {
+            case 'booking': return '📅';
+            case 'payment': return '💳';
+            case 'message': return '💬';
+            case 'review': return '⭐';
+            default: return '🔔';
+        }
+    }
+    
+    function getTitleForType(type) {
+        switch(type) {
+            case 'booking': return 'Booking Update';
+            case 'payment': return 'Payment Update';
+            case 'message': return 'New Message';
+            case 'review': return 'New Review';
+            default: return 'Notification';
+        }
+    }
+    
+    function getTypeClass(type) {
+        switch(type) {
+            case 'booking': return 'info';
+            case 'payment': return 'success';
+            case 'message': return 'warning';
+            case 'review': return 'danger';
+            default: return 'info';
+        }
+    }
+    
+    function formatTime(timestamp) {
+        const date = new Date(timestamp);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+        
+        if (diffMins < 1) return 'Just now';
+        if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
+        if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+        if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+        return date.toLocaleDateString();
+    }
+    
+    async function markAsRead(notificationId) {
+        await window.API.markNotificationAsRead(notificationId);
+        await loadNotifications();
+    }
+    
+    window.markAsRead = markAsRead;
+    
+    init();
+</script>
 </body>
 </html>
