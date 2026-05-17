@@ -44,12 +44,10 @@
             messageDiv.innerHTML = 'Creating account...';
             
             try {
-                // استخدام Auth.js الذي أنشأناه للربط مع Supabase
                 const data = await window.Auth.signUp(email, password, fullName, userType);
                 
                 messageDiv.innerHTML = '<span class="success">✅ Account created successfully! You can now log in.</span>';
                 
-                // مسح الحقول
                 document.getElementById('fullName').value = '';
                 document.getElementById('email').value = '';
                 document.getElementById('password').value = '';
@@ -60,7 +58,6 @@
                 
             } catch (error) {
                 messageDiv.innerHTML = '<span class="error">❌ Error: ' + error.message + '</span>';
-                console.error(error);
             }
         }
     </script>
